@@ -1,0 +1,51 @@
+{{define "head"}}{{end}}
+
+{{define "body"}}
+<div class="container-fluid p-t-15">
+  
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-toolbar clearfix">
+            <form class="pull-right search-bar" method="get" action="#!" role="form">
+              <div class="input-group">
+                <input type="text" class="form-control" value="{{.keyword}}" name="keyword" placeholder="请输入名称">
+              </div>
+            </form>
+            <div class="toolbar-btn-action">
+              <a class="btn btn-primary m-r-5" href="/admin/setting/admingroup/add"><i class="mdi mdi-plus"></i> 新增</a>
+            </div>
+          </div>
+          <div class="card-body">
+            
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>角色名称</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{range .adminGroups}}
+                    <tr>
+                        <td>{{.}}</td>
+                        <td>
+                            <a class="btn btn-xs btn-default" href="/admin/setting/admingroup/edit?id={{.}}" title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                            <a class="btn btn-xs btn-default ajaxBtn" href="javascript:void(0);" uri="/admin/setting/admingroup/del?id={{.}}" msg="是否删除该内容？" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                        </td>
+                    </tr>
+                  {{end}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+{{end}}
+
+{{define "script"}}{{end}}
