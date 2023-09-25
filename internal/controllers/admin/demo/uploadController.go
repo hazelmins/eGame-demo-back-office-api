@@ -1,9 +1,3 @@
-/*
- * @Description:上传附件示例
- * @Author: gphper
- * @Date: 2021-04-18 19:07:39
- */
-
 package demo
 
 import (

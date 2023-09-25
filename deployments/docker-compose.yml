@@ -1,8 +1,8 @@
 version: '3'
 services:
   redis:
-      container_name: ginadmin-redis
-      image: ginadmin-redis
+      container_name: egame-redis
+      image: egame-redis
       build:
         context: ..
         dockerfile: build/DockerfileRedis
@@ -13,8 +13,8 @@ services:
       command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
       restart: on-failure:5
   mysql:
-    container_name: ginadmin-mysql
-    image: ginadmin-mysql
+    container_name: egame-mysql
+    image: egame-mysql
     build:
       context: ..
       dockerfile: build/DockerfileMysql
@@ -24,13 +24,13 @@ services:
     ports:
         - "3310:3306"
   web:
-    container_name: ginadmin-web
-    image: ginadmin-web
+    container_name: egame-web
+    image: egame-web
     build:
       context: ..
       dockerfile: build/DockerfileWeb
     volumes:
-       - ..\:/home/ginadmin  
+       - ..\:/home/egame
     ports:
       - 20010:20010
     depends_on:

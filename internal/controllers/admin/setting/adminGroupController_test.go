@@ -1,8 +1,3 @@
-/*
- * @Description:
- * @Author: gphper
- * @Date: 2022-03-31 19:59:19
- */
 package setting
 
 import (
@@ -18,6 +13,7 @@ import (
 	"eGame-demo-back-office-api/pkg/utils/httptestutil"
 	"eGame-demo-back-office-api/pkg/utils/httptestutil/router"
 	"eGame-demo-back-office-api/web"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -48,6 +44,7 @@ func (suite *AdminTestSuite) TestALoginGet() {
 }
 
 // 登录
+//登錄post測試方式傳入寫死？
 func (suite *AdminTestSuite) TestALoginPost() {
 	option := httptestutil.OptionValue{
 		Param: url.Values{

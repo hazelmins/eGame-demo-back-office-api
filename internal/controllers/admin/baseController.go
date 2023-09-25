@@ -1,7 +1,5 @@
 /*
  * @Description:基础控制器
- * @Author: gphper
- * @Date: 2021-05-18 23:21:06
  */
 
 package admin
@@ -17,6 +15,7 @@ import (
 	"eGame-demo-back-office-api/internal/errorx"
 	"eGame-demo-back-office-api/pkg/loggers"
 	gvalidator "eGame-demo-back-office-api/pkg/validator"
+
 	perrors "github.com/pkg/errors"
 
 	"github.com/gin-gonic/gin"

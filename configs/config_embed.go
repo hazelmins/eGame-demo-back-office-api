@@ -1,12 +1,6 @@
 //go:build embed
 // +build embed
 
-/*
- * @Description:
- * @Author: gphper
- * @Date: 2021-07-29 19:47:42
- */
-
 package configs
 
 import (

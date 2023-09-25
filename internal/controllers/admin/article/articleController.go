@@ -1,8 +1,3 @@
-/*
- * @Description:
- * @Author: gphper
- * @Date: 2021-10-17 14:18:10
- */
 package article
 
 import (

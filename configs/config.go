@@ -1,11 +1,5 @@
 //go:build !embed
 
-/*
- * @Description:
- * @Author: gphper
- * @Date: 2021-07-04 11:58:45
- */
-
 package configs
 
 import (
