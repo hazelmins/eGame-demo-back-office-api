@@ -11,10 +11,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gphper/ginadmin/internal/menu"
-	"github.com/gphper/ginadmin/internal/models"
-	services "github.com/gphper/ginadmin/internal/services/admin"
-	"github.com/gphper/ginadmin/pkg/casbinauth"
+	"eGame-demo-back-office-api/internal/menu"
+	"eGame-demo-back-office-api/internal/models"
+	services "eGame-demo-back-office-api/internal/services/admin"
+	"eGame-demo-back-office-api/pkg/casbinauth"
 
 	"github.com/gin-gonic/gin"
 )

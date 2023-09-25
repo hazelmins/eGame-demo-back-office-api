@@ -10,9 +10,9 @@
 package web
 
 import (
+	template2 "eGame-demo-back-office-api/pkg/template"
 	"embed"
 	"fmt"
-	template2 "github.com/gphper/ginadmin/pkg/template"
 	"github.com/gphper/multitemplate"
 	"io/fs"
 	"net/http"

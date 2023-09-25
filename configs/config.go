@@ -9,11 +9,10 @@
 package configs
 
 import (
+	"eGame-demo-back-office-api/pkg/utils/filesystem"
 	"flag"
 	"io/ioutil"
 	"testing"
-
-	"github.com/gphper/ginadmin/pkg/utils/filesystem"
 
 	"gopkg.in/yaml.v2"
 )

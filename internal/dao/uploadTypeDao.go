@@ -8,8 +8,8 @@ package dao
 import (
 	"sync"
 
-	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/pkg/mysqlx"
+	"eGame-demo-back-office-api/internal/models"
+	"eGame-demo-back-office-api/pkg/mysqlx"
 
 	"gorm.io/gorm"
 )

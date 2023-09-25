@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gphper/ginadmin/pkg/casbinauth"
+	"eGame-demo-back-office-api/pkg/casbinauth"
 )
 
 var GlobalTemplateFun template.FuncMap

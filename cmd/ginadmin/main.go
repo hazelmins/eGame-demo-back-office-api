@@ -10,10 +10,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/gphper/ginadmin/cmd/cli/db"
-	"github.com/gphper/ginadmin/cmd/cli/file"
-	"github.com/gphper/ginadmin/cmd/cli/run"
-	"github.com/gphper/ginadmin/cmd/cli/version"
+	"eGame-demo-back-office-api/cmd/cli/db"
+	"eGame-demo-back-office-api/cmd/cli/file"
+	"eGame-demo-back-office-api/cmd/cli/run"
+	"eGame-demo-back-office-api/cmd/cli/version"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +26,7 @@ var (
 // @description GinAdmin 示例项目
 
 // @contact.name gphper
-// @contact.url https://github.com/gphper/ginadmin
+// @contact.url https://eGame-demo-back-office-api
 
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html

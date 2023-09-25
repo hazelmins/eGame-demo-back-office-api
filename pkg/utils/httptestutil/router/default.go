@@ -8,11 +8,11 @@ package router
 import (
 	"time"
 
-	"github.com/gphper/ginadmin/internal/controllers"
-	"github.com/gphper/ginadmin/internal/middleware"
-	"github.com/gphper/ginadmin/pkg/loggers/facade"
-	"github.com/gphper/ginadmin/pkg/loggers/medium"
-	"github.com/gphper/ginadmin/web"
+	"eGame-demo-back-office-api/internal/controllers"
+	"eGame-demo-back-office-api/internal/middleware"
+	"eGame-demo-back-office-api/pkg/loggers/facade"
+	"eGame-demo-back-office-api/pkg/loggers/medium"
+	"eGame-demo-back-office-api/web"
 
 	"github.com/gin-gonic/gin"
 )

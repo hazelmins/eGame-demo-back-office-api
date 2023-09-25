@@ -8,7 +8,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/gphper/ginadmin/pkg/jwt"
+	"eGame-demo-back-office-api/pkg/jwt"
 
 	"github.com/gin-gonic/gin"
 )

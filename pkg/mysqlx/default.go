@@ -9,8 +9,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/gphper/ginadmin/configs"
-	"github.com/gphper/ginadmin/pkg/loggers"
+	"eGame-demo-back-office-api/configs"
+	"eGame-demo-back-office-api/pkg/loggers"
 	"gorm.io/driver/mysql"
 
 	"gorm.io/gorm"

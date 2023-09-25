@@ -14,9 +14,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gphper/ginadmin/internal/errorx"
-	"github.com/gphper/ginadmin/pkg/loggers"
-	gvalidator "github.com/gphper/ginadmin/pkg/validator"
+	"eGame-demo-back-office-api/internal/errorx"
+	"eGame-demo-back-office-api/pkg/loggers"
+	gvalidator "eGame-demo-back-office-api/pkg/validator"
 	perrors "github.com/pkg/errors"
 
 	"github.com/gin-gonic/gin"

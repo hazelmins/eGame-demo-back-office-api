@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/gphper/ginadmin/pkg/redisx"
+	"eGame-demo-back-office-api/pkg/redisx"
 
 	"github.com/go-redis/redis"
 )

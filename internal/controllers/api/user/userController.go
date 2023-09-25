@@ -6,11 +6,11 @@
 package user
 
 import (
-	"github.com/gphper/ginadmin/internal/controllers/api"
-	"github.com/gphper/ginadmin/internal/errorx"
-	"github.com/gphper/ginadmin/internal/middleware"
-	"github.com/gphper/ginadmin/internal/models"
-	apiservice "github.com/gphper/ginadmin/internal/services/api"
+	"eGame-demo-back-office-api/internal/controllers/api"
+	"eGame-demo-back-office-api/internal/errorx"
+	"eGame-demo-back-office-api/internal/middleware"
+	"eGame-demo-back-office-api/internal/models"
+	apiservice "eGame-demo-back-office-api/internal/services/api"
 
 	"github.com/gin-gonic/gin"
 )

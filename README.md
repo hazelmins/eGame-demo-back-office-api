@@ -88,7 +88,7 @@
 1. git 克隆地址 
    
    ```
-   git clone https://github.com/gphper/ginadmin.git
+   git clone https://eGame-demo-back-office-api.git
    ```
 
 2. 下载依赖包
@@ -230,7 +230,7 @@
 
 2. 自定义日志
    
-   使用 loggers.LogInfo()` 方法记录日志  `github.com/gphper/ginadmin/pkg/loggers`
+   使用 loggers.LogInfo()` 方法记录日志  `eGame-demo-back-office-api/pkg/loggers`
    
    ```golang
    loggers.LogInfo("admin", "this is a info message", map[string]string{

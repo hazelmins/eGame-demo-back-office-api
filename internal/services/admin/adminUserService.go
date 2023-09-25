@@ -11,10 +11,10 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/gphper/ginadmin/internal/dao"
-	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/pkg/casbinauth"
-	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
+	"eGame-demo-back-office-api/internal/dao"
+	"eGame-demo-back-office-api/internal/models"
+	"eGame-demo-back-office-api/pkg/casbinauth"
+	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 
 	"gorm.io/gorm"
 )

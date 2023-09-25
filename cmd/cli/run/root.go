@@ -5,15 +5,15 @@ import (
 	"io/ioutil"
 	"log"
 
+	"eGame-demo-back-office-api/configs"
+	_ "eGame-demo-back-office-api/docs"
+	"eGame-demo-back-office-api/internal"
+	"eGame-demo-back-office-api/internal/cron"
+	"eGame-demo-back-office-api/internal/router"
+	"eGame-demo-back-office-api/pkg/mysqlx"
+	"eGame-demo-back-office-api/pkg/redisx"
+	"eGame-demo-back-office-api/web"
 	"github.com/gin-gonic/gin"
-	"github.com/gphper/ginadmin/configs"
-	_ "github.com/gphper/ginadmin/docs"
-	"github.com/gphper/ginadmin/internal"
-	"github.com/gphper/ginadmin/internal/cron"
-	"github.com/gphper/ginadmin/internal/router"
-	"github.com/gphper/ginadmin/pkg/mysqlx"
-	"github.com/gphper/ginadmin/pkg/redisx"
-	"github.com/gphper/ginadmin/web"
 	"github.com/spf13/cobra"
 )
 

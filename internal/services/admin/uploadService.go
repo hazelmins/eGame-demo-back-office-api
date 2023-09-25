@@ -8,8 +8,8 @@ package admin
 import (
 	"sync"
 
-	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/pkg/uploader"
+	"eGame-demo-back-office-api/internal/models"
+	"eGame-demo-back-office-api/pkg/uploader"
 )
 
 type uploadService struct {

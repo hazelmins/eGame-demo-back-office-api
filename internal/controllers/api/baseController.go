@@ -11,9 +11,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gphper/ginadmin/internal/errorx"
-	"github.com/gphper/ginadmin/pkg/loggers"
-	gvalidator "github.com/gphper/ginadmin/pkg/validator"
+	"eGame-demo-back-office-api/internal/errorx"
+	"eGame-demo-back-office-api/pkg/loggers"
+	gvalidator "eGame-demo-back-office-api/pkg/validator"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"

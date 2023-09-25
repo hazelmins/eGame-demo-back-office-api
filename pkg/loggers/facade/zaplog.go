@@ -8,7 +8,7 @@ package facade
 import (
 	"context"
 
-	"github.com/gphper/ginadmin/pkg/loggers/newer"
+	"eGame-demo-back-office-api/pkg/loggers/newer"
 
 	"go.uber.org/zap"
 )

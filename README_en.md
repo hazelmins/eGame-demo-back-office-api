@@ -53,7 +53,7 @@ The project is a background management platform based on gin framework. Although
 1. Clone the project
 
    ```
-   git clone https://github.com/gphper/ginadmin.git
+   git clone https://eGame-demo-back-office-api.git
    ```
 
 2. Download mod
@@ -141,7 +141,7 @@ The project is a background management platform based on gin framework. Although
     
 2.  Custom Log
     
-    Use  `loggers.LogInfo()`   in  `github.com/gphper/ginadmin/pkg/loggers`
+    Use  `loggers.LogInfo()`   in  `eGame-demo-back-office-api/pkg/loggers`
     
     ```golang
     loggers.LogInfo("admin", "this is a info message", map[string]string{

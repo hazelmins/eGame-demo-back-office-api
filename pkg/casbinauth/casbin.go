@@ -10,8 +10,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/gphper/ginadmin/pkg/mysqlx"
-	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
+	"eGame-demo-back-office-api/pkg/mysqlx"
+	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"

@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/gphper/ginadmin/pkg/loggers"
+	"eGame-demo-back-office-api/pkg/loggers"
 	"github.com/robfig/cron/v3"
 )
 

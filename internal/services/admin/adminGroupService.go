@@ -8,9 +8,9 @@ package admin
 import (
 	"sync"
 
-	"github.com/gphper/ginadmin/internal/dao"
-	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/pkg/casbinauth"
+	"eGame-demo-back-office-api/internal/dao"
+	"eGame-demo-back-office-api/internal/models"
+	"eGame-demo-back-office-api/pkg/casbinauth"
 )
 
 type adminGroupService struct {

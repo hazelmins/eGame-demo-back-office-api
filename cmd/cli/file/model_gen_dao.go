@@ -1,11 +1,3 @@
-/**
- * @Author: GPHPER
- * @Date: 2022-12-14 10:06:57
- * @Github: https://github.com/gphper
- * @LastEditTime: 2022-12-14 10:49:16
- * @FilePath: \ginadmin\cmd\cli\file\model_gen_dao.go
- * @Description:
- */
 package file
 
 import (
@@ -14,7 +6,8 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/gphper/ginadmin/configs"
+	"eGame-demo-back-office-api/configs"
+
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +16,7 @@ var daoStr string = `package dao
 import (
 	"sync"
 
-	"github.com/gphper/ginadmin/internal/models"
+	"eGame-demo-back-office-api/internal/models"
 
 	"gorm.io/gorm"
 )
@@ -73,19 +66,23 @@ func (dao *{{.ModelName}}Dao) Del(conditions map[string]interface{}) error {
 `
 
 func writeDao(modelName string, file string) error {
-
+	// 定義一個叫做 parms 的結構，用於存儲 DAO（資料訪問對象）生成所需的參數。
 	parms := struct {
-		ModelName string // Person
+		ModelName string // 資料模型的名稱，例如 "Person"
 	}{
-		ModelName: modelName,
+		ModelName: modelName, // 資料模型的名稱由函數的參數 modelName 傳遞進來
 	}
 
+	// 設定新 DAO 文件的路徑，這是在指定的配置根路徑下的 "internal/dao" 目錄中的文件
 	newDaoPath := configs.RootPath + "internal" + string(filepath.Separator) + "dao" + string(filepath.Separator) + file + "Dao.go"
+
+	// 檢查是否已經存在相同名稱的 DAO 文件，如果存在則返回錯誤
 	_, err := os.Lstat(newDaoPath)
 	if err == nil {
 		return errors.New("file already exist")
 	}
 
+	// 創建新的 DAO 文件
 	fileDao, err := os.Create(newDaoPath)
 	if err != nil {
 		cobra.CompError(err.Error())
@@ -93,6 +90,7 @@ func writeDao(modelName string, file string) error {
 	}
 	defer fileDao.Close()
 
+	// 使用模板將參數填充到 DAO 文件中，生成 DAO 代碼
 	tem, _ := template.New("models_file").Parse(daoStr)
 	tem.ExecuteTemplate(fileDao, "models_file", parms)
 

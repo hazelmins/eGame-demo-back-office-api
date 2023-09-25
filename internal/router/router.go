@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"os"
 
+	"eGame-demo-back-office-api/internal"
 	"github.com/gin-gonic/gin"
-	"github.com/gphper/ginadmin/internal"
 	"github.com/gphper/multitemplate"
 )
 

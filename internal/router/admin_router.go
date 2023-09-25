@@ -6,12 +6,12 @@
 package router
 
 import (
-	"github.com/gphper/ginadmin/internal/controllers/admin"
-	"github.com/gphper/ginadmin/internal/controllers/admin/article"
-	"github.com/gphper/ginadmin/internal/controllers/admin/demo"
-	"github.com/gphper/ginadmin/internal/controllers/admin/setting"
-	"github.com/gphper/ginadmin/internal/controllers/admin/upload"
-	"github.com/gphper/ginadmin/internal/middleware"
+	"eGame-demo-back-office-api/internal/controllers/admin"
+	"eGame-demo-back-office-api/internal/controllers/admin/article"
+	"eGame-demo-back-office-api/internal/controllers/admin/demo"
+	"eGame-demo-back-office-api/internal/controllers/admin/setting"
+	"eGame-demo-back-office-api/internal/controllers/admin/upload"
+	"eGame-demo-back-office-api/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )

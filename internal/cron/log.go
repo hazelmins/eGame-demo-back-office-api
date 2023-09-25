@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gphper/ginadmin/configs"
-	"github.com/gphper/ginadmin/pkg/redisx"
-	"github.com/gphper/ginadmin/pkg/utils/filesystem"
-	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
+	"eGame-demo-back-office-api/configs"
+	"eGame-demo-back-office-api/pkg/redisx"
+	"eGame-demo-back-office-api/pkg/utils/filesystem"
+	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 )
 
 /**

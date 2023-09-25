@@ -50,7 +50,7 @@ host: localhost:20011
 info:
   contact:
     name: gphper
-    url: https://github.com/gphper/ginadmin
+    url: https://eGame-demo-back-office-api
   description: GinAdmin 示例项目
   license:
     name: Apache 2.0

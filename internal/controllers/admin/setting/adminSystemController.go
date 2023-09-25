@@ -17,12 +17,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gphper/ginadmin/configs"
-	"github.com/gphper/ginadmin/internal/controllers/admin"
-	"github.com/gphper/ginadmin/pkg/loggers"
-	"github.com/gphper/ginadmin/pkg/redisx"
-	"github.com/gphper/ginadmin/pkg/utils/filesystem"
-	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
+	"eGame-demo-back-office-api/configs"
+	"eGame-demo-back-office-api/internal/controllers/admin"
+	"eGame-demo-back-office-api/pkg/loggers"
+	"eGame-demo-back-office-api/pkg/redisx"
+	"eGame-demo-back-office-api/pkg/utils/filesystem"
+	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 
 	"github.com/gin-gonic/gin"
 )

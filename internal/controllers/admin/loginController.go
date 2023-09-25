@@ -14,9 +14,9 @@ import (
 	"net/http"
 	"strings"
 
-	services "github.com/gphper/ginadmin/internal/services/admin"
-	"github.com/gphper/ginadmin/pkg/captcha/store"
-	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
+	services "eGame-demo-back-office-api/internal/services/admin"
+	"eGame-demo-back-office-api/pkg/captcha/store"
+	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

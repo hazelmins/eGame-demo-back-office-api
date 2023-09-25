@@ -8,7 +8,7 @@ package loggers
 import (
 	"context"
 
-	"github.com/gphper/ginadmin/pkg/loggers/facade"
+	"eGame-demo-back-office-api/pkg/loggers/facade"
 )
 
 /*

@@ -8,10 +8,10 @@ package article
 import (
 	"net/http"
 
-	"github.com/gphper/ginadmin/internal/controllers/admin"
-	"github.com/gphper/ginadmin/internal/models"
-	services "github.com/gphper/ginadmin/internal/services/admin"
-	"github.com/gphper/ginadmin/pkg/paginater"
+	"eGame-demo-back-office-api/internal/controllers/admin"
+	"eGame-demo-back-office-api/internal/models"
+	services "eGame-demo-back-office-api/internal/services/admin"
+	"eGame-demo-back-office-api/pkg/paginater"
 
 	"github.com/gin-gonic/gin"
 )

@@ -13,9 +13,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/gphper/ginadmin/configs"
+	"eGame-demo-back-office-api/configs"
 
-	template2 "github.com/gphper/ginadmin/pkg/template"
+	template2 "eGame-demo-back-office-api/pkg/template"
 
 	"github.com/gphper/multitemplate"
 )

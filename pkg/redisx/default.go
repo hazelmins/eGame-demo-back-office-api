@@ -6,7 +6,7 @@
 package redisx
 
 import (
-	"github.com/gphper/ginadmin/configs"
+	"eGame-demo-back-office-api/configs"
 
 	"github.com/go-redis/redis"
 )

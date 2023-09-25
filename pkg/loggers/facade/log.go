@@ -8,7 +8,7 @@ package facade
 import (
 	"context"
 
-	"github.com/gphper/ginadmin/configs"
+	"eGame-demo-back-office-api/configs"
 )
 
 type Log interface {

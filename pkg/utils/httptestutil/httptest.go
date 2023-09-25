@@ -12,7 +12,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/gphper/ginadmin/pkg/utils/httptestutil/router"
+	"eGame-demo-back-office-api/pkg/utils/httptestutil/router"
 )
 
 type OptionValue struct {

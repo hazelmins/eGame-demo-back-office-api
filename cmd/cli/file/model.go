@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gphper/ginadmin/configs"
-	gstrings "github.com/gphper/ginadmin/pkg/utils/strings"
+	"eGame-demo-back-office-api/configs"
+	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 	"github.com/spf13/cobra"
 )
 

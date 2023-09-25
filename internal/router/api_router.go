@@ -6,7 +6,7 @@
 package router
 
 import (
-	"github.com/gphper/ginadmin/internal/controllers/api/user"
+	"eGame-demo-back-office-api/internal/controllers/api/user"
 
 	"github.com/gin-gonic/gin"
 )

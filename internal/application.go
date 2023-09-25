@@ -14,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gphper/ginadmin/configs"
-	"github.com/gphper/ginadmin/internal/cron"
+	"eGame-demo-back-office-api/configs"
+	"eGame-demo-back-office-api/internal/cron"
 
 	"github.com/gin-gonic/gin"
 )

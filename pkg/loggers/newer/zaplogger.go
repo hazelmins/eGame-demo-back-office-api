@@ -9,7 +9,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/gphper/ginadmin/configs"
+	"eGame-demo-back-office-api/configs"
 
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"go.uber.org/zap"

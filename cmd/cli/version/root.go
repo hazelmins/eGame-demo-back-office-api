@@ -3,7 +3,7 @@ package version
 import (
 	"fmt"
 
-	_ "github.com/gphper/ginadmin/docs"
+	_ "eGame-demo-back-office-api/docs"
 	"github.com/spf13/cobra"
 )
 

@@ -11,11 +11,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gphper/ginadmin/internal/dao"
-	"github.com/gphper/ginadmin/internal/errorx"
-	"github.com/gphper/ginadmin/internal/models"
-	"github.com/gphper/ginadmin/pkg/jwt"
-	"github.com/gphper/ginadmin/pkg/utils/strings"
+	"eGame-demo-back-office-api/internal/dao"
+	"eGame-demo-back-office-api/internal/errorx"
+	"eGame-demo-back-office-api/internal/models"
+	"eGame-demo-back-office-api/pkg/jwt"
+	"eGame-demo-back-office-api/pkg/utils/strings"
 	"gorm.io/gorm"
 )
 

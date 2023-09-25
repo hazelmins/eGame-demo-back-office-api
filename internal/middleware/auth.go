@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/gphper/ginadmin/pkg/casbinauth"
+	"eGame-demo-back-office-api/pkg/casbinauth"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -56,8 +56,8 @@ func AdminUserAuth() gin.HandlerFunc {
 */
 func AdminUserPrivs() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		username,ok := c.Get("username")
-		if !ok{
+		username, ok := c.Get("username")
+		if !ok {
 			c.Header("Content-Type", "text/html; charset=utf-8")
 			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
 			return

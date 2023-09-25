@@ -20,7 +20,7 @@ var doc = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "gphper",
-            "url": "https://github.com/gphper/ginadmin"
+            "url": "https://eGame-demo-back-office-api"
         },
         "license": {
             "name": "Apache 2.0",

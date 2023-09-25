@@ -10,7 +10,7 @@ import (
 	"mime/multipart"
 	"os"
 
-	"github.com/gphper/ginadmin/configs"
+	"eGame-demo-back-office-api/configs"
 )
 
 type LocalStorage struct {

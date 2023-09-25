@@ -8,8 +8,8 @@ package models
 import (
 	"time"
 
-	"github.com/gphper/ginadmin/pkg/mysqlx"
-	"github.com/gphper/ginadmin/pkg/utils/strings"
+	"eGame-demo-back-office-api/pkg/mysqlx"
+	"eGame-demo-back-office-api/pkg/utils/strings"
 	"gorm.io/gorm"
 )
 

@@ -12,11 +12,11 @@ import (
 	"net/http"
 	"os"
 
+	"eGame-demo-back-office-api/internal"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/gphper/ginadmin/internal"
 	"github.com/gphper/multitemplate"
 )
 
