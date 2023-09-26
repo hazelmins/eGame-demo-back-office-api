@@ -44,7 +44,7 @@ func (con loginController) Routes(rg *gin.RouterGroup) {
 func (con loginController) login(c *gin.Context) {
 	if c.Request.Method == "GET" {
 		con.Html(c, http.StatusOK, "home/login.html", gin.H{
-			"title": "GinAdmin管理平台",
+			"title": "Egame backoffice",
 		})
 	} else {
 		username := c.PostForm("username")

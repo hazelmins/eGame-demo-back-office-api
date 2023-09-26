@@ -66,8 +66,8 @@ func (suite *AdminTestSuite) TestALoginPost() {
 func (suite *AdminTestSuite) TestBAddGroup() {
 	param := httptestutil.OptionValue{
 		Param: url.Values{
-			"groupname": {"测试角色11"},
-			"privs[]": []string{
+			"groupname": {"超級管理員"}, //群組名稱
+			"privs[]": []string{ //權限
 				"setting:get",
 				"/admin/setting/adminuser/index:get",
 				"/admin/setting/adminuser/add:get",
