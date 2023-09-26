@@ -6,7 +6,6 @@ package setting
 
 import (
 	"eGame-demo-back-office-api/internal/controllers/admin"
-	"eGame-demo-back-office-api/internal/dao"
 	"eGame-demo-back-office-api/internal/models"
 	services "eGame-demo-back-office-api/internal/services/admin"
 	"eGame-demo-back-office-api/pkg/casbinauth"
@@ -60,9 +59,6 @@ func (con adminUserController) index(c *gin.Context) {
 	// 从 Gin 上下文中获取请求上下文。
 	ctx, _ := c.Get("ctx")
 
-	// 声明一个未使用的 dao.AdminGroupDao 变量，可能是因为后续代码中未使用，可以删除。
-	var _ dao.AdminGroupDao
-
 	// 调用 services.NewAdminUserService() 创建 adminUserService 的实例，然后调用其 Dao 属性上的 GetAdminUsers 方法。
 	adminDb := services.NewAdminUserService().Dao.GetAdminUsers(ctx.(context.Context), req.Nickname, req.CreatedAt)
 
@@ -73,7 +69,8 @@ func (con adminUserController) index(c *gin.Context) {
 		con.ErrorHtml(c, err)
 	}
 
-	// 使用 con.Html 方法返回 HTML 响应，将 adminUserData、c.Query("created_at") 和 c.Query("nickname") 作为模板变量传递给模板文件 "setting/adminuser.html"。
+	// 使用 con.Html 方法返回 HTML 响应，将 adminUserData、c.Query("created_at") 和 c.Query("nickname")
+	//作为模板变量传递给模板文件 "setting/adminuser.html"。
 	con.Html(c, http.StatusOK, "setting/adminuser.html", gin.H{
 		"adminUserData": adminUserData,
 		"created_at":    c.Query("created_at"),
