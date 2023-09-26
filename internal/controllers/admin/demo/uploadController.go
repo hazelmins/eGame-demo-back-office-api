@@ -1,3 +1,4 @@
+//上传附件示例 上傳圖檔
 package demo
 
 import (

@@ -1,8 +1,3 @@
-/*
- * @Description:
- * @Author: gphper
- * @Date: 2022-03-15 20:14:09
- */
 package dao
 
 import (
@@ -37,22 +32,27 @@ func (dao *AdminUserDao) GetAdminUser(conditions map[string]interface{}) (adminU
 	return
 }
 
-func (dao *AdminUserDao) GetAdminUsers(context context.Context, nickname string, created_time string) (db *gorm.DB) {
+func (dao *AdminUserDao) GetAdminUsers(ctx context.Context, nickname string, created_time string) *gorm.DB {
+	// 創建一個初始的數據庫查詢對象
+	db := dao.DB.WithContext(ctx).Table("admin_users")
 
-	db = dao.DB.WithContext(context).Table("admin_users")
-
+	// 根據提供的條件動態構建查詢
 	if nickname != "" {
-		db = db.Where("nickname like ?", "%"+nickname+"%")
+		db = db.Where("nickname LIKE ?", "%"+nickname+"%")
 	}
 
 	if created_time != "" {
+		// 解析創建時間範圍
 		period := strings.Split(created_time, " ~ ")
 		start := period[0] + " 00:00:00"
 		end := period[1] + " 23:59:59"
-		db = db.Where("admin_users.created_at > ? ", start).Where("admin_users.created_at < ?", end)
+
+		// 添加創建時間的過濾條件
+		db = db.Where("admin_users.created_at BETWEEN ? AND ?", start, end)
 	}
 
-	return
+	// 返回數據庫查詢對象，以便在其他地方進行進一步操作
+	return db
 }
 
 func (dao *AdminUserDao) UpdateColumn(uid uint, key, value string) error {

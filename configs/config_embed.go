@@ -5,7 +5,6 @@ package configs
 
 import (
 	"bytes"
-	_ "embed"
 	"fmt"
 
 	"gopkg.in/yaml.v2"

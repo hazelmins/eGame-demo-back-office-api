@@ -1,3 +1,4 @@
+//用户组管理 单元测试结构
 package setting
 
 import (
@@ -44,7 +45,7 @@ func (suite *AdminTestSuite) TestALoginGet() {
 }
 
 // 登录
-//登錄post測試方式傳入寫死？
+//登錄post測試方式傳入寫死
 func (suite *AdminTestSuite) TestALoginPost() {
 	option := httptestutil.OptionValue{
 		Param: url.Values{

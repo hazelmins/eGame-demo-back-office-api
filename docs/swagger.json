@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "GinAdmin 示例项目",
-        "title": "GinAdmin Api",
+        "description": "Egame 後台",
+        "title": "Egame",
         "contact": {
             "name": "gphper",
             "url": "https://eGame-demo-back-office-api"
@@ -87,7 +87,7 @@
                 }
             }
         },
-        "/user//refresh": {
+        "/user/refresh": {
             "post": {
                 "consumes": [
                     "multipart/form-data"

@@ -16,6 +16,7 @@ import (
 	"eGame-demo-back-office-api/pkg/loggers/medium"
 	"eGame-demo-back-office-api/pkg/utils/strings"
 	"eGame-demo-back-office-api/web"
+
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	ginSwagger "github.com/swaggo/gin-swagger"

@@ -1,8 +1,3 @@
-/*
- * @Description:
- * @Author: gphper
- * @Date: 2021-08-20 20:46:25
- */
 package redisx
 
 import (

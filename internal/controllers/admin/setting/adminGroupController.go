@@ -1,5 +1,5 @@
 /*
- * @Description:用户组管理
+ * @Description:用户组管理 支持多权限管理
  */
 
 package setting

@@ -103,7 +103,7 @@ paths:
       summary: 展示用户信息
       tags:
       - 示例
-  /user//refresh:
+  /user/refresh:
     post:
       consumes:
       - multipart/form-data
