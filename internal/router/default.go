@@ -17,10 +17,6 @@ import (
 	"eGame-demo-back-office-api/pkg/utils/strings"
 	"eGame-demo-back-office-api/web"
 
-	"github.com/swaggo/gin-swagger/swaggerFiles"
-
-	ginSwagger "github.com/swaggo/gin-swagger"
-
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -37,10 +33,10 @@ func Init() (*Router, error) {
 	//设置全局中间件
 	router.SetGlobalMiddleware(middleware.Trace(), medium.GinLog(facade.NewLogger("admin"), time.RFC3339, false), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
 
-	// 开发模式设置接口文档路由
-	if gin.Mode() == "debug" {
-		router.SetSwaagerHandle("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	}
+	// // 开发模式设置接口文档路由
+	// if gin.Mode() == "debug" {
+	// 	router.SetSwaagerHandle("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// }
 
 	// 设置模板解析函数
 	render, err := web.LoadTemplates()

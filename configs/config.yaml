@@ -15,5 +15,5 @@ session:
   session_name: "gosession_id"
 base:
   host: 0.0.0.0
-  port: 20011
+  port: 8091
   log_media: "redis"
