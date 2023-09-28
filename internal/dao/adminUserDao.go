@@ -1,3 +1,5 @@
+//資料庫操作
+
 package dao
 
 import (

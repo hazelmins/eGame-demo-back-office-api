@@ -11,13 +11,16 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	services "eGame-demo-back-office-api/internal/services/admin"
 	"eGame-demo-back-office-api/pkg/captcha/store"
+	"eGame-demo-back-office-api/pkg/redisx"
 	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/mojocn/base64Captcha"
 )
 
@@ -62,31 +65,44 @@ func (con loginController) login(c *gin.Context) {
 			}
 
 		}
-
+		//setp 1 進db取玩家資料
 		adminUser, err := services.NewAdminUserService().GetAdminUser(map[string]interface{}{"username": username})
 		if err != nil {
-			con.Error(c, "账号密码错误")
+			con.Error(c, "無此管理員")
 			return
 		}
 		//判断密码是否正确
 		if gstrings.Encryption(password, adminUser.Salt) == adminUser.Password {
-
+			// 如果密碼驗證成功，創建用戶信息字典
 			userInfo := make(map[string]interface{})
 			userInfo["uid"] = adminUser.Uid
 			userInfo["username"] = adminUser.Username
 			userInfo["groupname"] = adminUser.GroupName
-			//session 存储数据
-			session := sessions.Default(c)
-			userstr, _ := json.Marshal(userInfo)
 
-			session.Set("userInfo", string(userstr))
+			// 將用戶信息序列化為 JSON 字符串
+			userstr, _ := json.Marshal(userInfo)
+			token := uuid.New().String()
+			token = strings.Replace(token, "-", "", -1)
+
+			// 將 JSON 字符串存儲到 Redis 中
+			redisClient := redisx.GetRedisClient()
+			err := redisClient.Set(token, string(userstr), time.Hour*1).Err()
+			if err != nil {
+				// 处理错误
+				con.Error(c, "无法存储用户信息到 Redis")
+				return
+			}
+			// 將 token 存儲到會話中，以便登出時使用
+			session := sessions.Default(c)
+			session.Set("token", token)
 			session.Save()
 
+			// 登录成功，重定向到 /admin/home 并显示成功消息
 			con.Success(c, "/admin/home", "登录成功")
 		} else {
+			// 登录失败，显示错误消息
 			con.Error(c, "账号密码错误")
 		}
-
 	}
 
 }
@@ -95,9 +111,25 @@ func (con loginController) login(c *gin.Context) {
 * 登出
  */
 func (con loginController) loginOut(c *gin.Context) {
+	// 從會話中獲取 token
 	session := sessions.Default(c)
+	token := session.Get("token")
+	if token != nil {
+		// 從 Redis 中刪除 token
+		redisClient := redisx.GetRedisClient()
+		err := redisClient.Del(token.(string)).Err()
+		if err != nil {
+			// 处理错误
+			con.Error(c, "無法刪除用戶信息從 Redis")
+			return
+		}
+	}
+
+	// 清除會話中的 token
+	session.Delete("token")
 	session.Delete("userInfo")
 	session.Save()
+
 	c.Redirect(http.StatusFound, "/admin/login")
 }
 

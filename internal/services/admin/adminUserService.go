@@ -1,7 +1,5 @@
 /*
  * @Description:用户服务
- * @Author: gphper
- * @Date: 2021-07-18 13:59:07
  */
 package admin
 
@@ -129,18 +127,18 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 	return
 }
 
-//获取单个管理员用户信息
+// 获取单个管理员用户信息 進db取admin資料
 func (ser *adminUserService) GetAdminUser(conditions map[string]interface{}) (adminUser models.AdminUsers, err error) {
 	adminUser, err = ser.Dao.GetAdminUser(conditions)
 	return
 }
 
-//删除管理员
+// 删除管理员
 func (ser *adminUserService) DelAdminUser(id string) (err error) {
 	return ser.Dao.Del(map[string]interface{}{"uid": id})
 }
 
-//修改密码
+// 修改密码
 func (ser *adminUserService) EditPass(req models.AdminUserEditPassReq) (err error) {
 
 	var adminUser models.AdminUsers
@@ -167,7 +165,7 @@ func (ser *adminUserService) EditPass(req models.AdminUserEditPassReq) (err erro
 	return
 }
 
-//根究用户保存自定义皮肤
+// 根究用户保存自定义皮肤
 func (ser *adminUserService) EditSkin(req models.AdminUserSkinReq) (err error) {
 
 	var skinMap = map[string]string{

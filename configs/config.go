@@ -31,6 +31,8 @@ type MysqlConf struct {
 	MaxIdleConn int    `yaml:"max_idle_conn" json:"max_idle_conn"`
 }
 
+var Login *RedisConf
+
 type RedisConf struct {
 	Addr     string `yaml:"addr"`
 	Db       int    `yaml:"db"`

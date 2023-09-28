@@ -72,6 +72,7 @@ func seedFunc(cmd *cobra.Command, args []string) {
 		}
 
 		// 將模型轉換為 mysqlx.GaTabler 介面，從數據庫中填充數據
+		//這裡會將默認的admin灌入db
 		tabler := v.(mysqlx.GaTabler)
 		db := mysqlx.GetDB(tabler)
 		tabler.FillData(db)

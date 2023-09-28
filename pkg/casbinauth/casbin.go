@@ -1,7 +1,5 @@
 /*
  * @Description:casbin方法二次封装
- * @Author: gphper
- * @Date: 2021-07-20 20:52:20
  */
 package casbinauth
 
@@ -54,7 +52,7 @@ func init() {
 	}
 }
 
-//获取enforce对象，开始事务时使用
+// 获取enforce对象，开始事务时使用
 func newEnforceObj(tx *gorm.DB) *casbin.Enforcer {
 	a, err := gormadapter.NewAdapterByDB(mysqlx.GetDB(&mysqlx.BaseModle{ConnName: "default"}))
 	if err != nil {
@@ -84,7 +82,7 @@ func newEnforceObj(tx *gorm.DB) *casbin.Enforcer {
 	return e
 }
 
-//主动更新全局的enforce对象
+// 主动更新全局的enforce对象
 func loadPolicy() {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -101,7 +99,7 @@ func PutEnforceObj(en *casbin.Enforcer) {
 	syncPool.Put(en)
 }
 
-//添加规则
+// 添加规则
 func AddPolice(rules [][]string) (bool, error) {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -110,7 +108,7 @@ func AddPolice(rules [][]string) (bool, error) {
 	return ok, err
 }
 
-//删除规则
+// 删除规则
 func RemovePolices(rules [][]string) (bool, error) {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -119,7 +117,7 @@ func RemovePolices(rules [][]string) (bool, error) {
 	return ok, err
 }
 
-//获取全部分组
+// 获取全部分组
 func GetGroups() []string {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -127,7 +125,7 @@ func GetGroups() []string {
 	return en.GetAllNamedSubjects("p")
 }
 
-//获取组中是否具有该权限
+// 获取组中是否具有该权限
 func HasObjByGroup(groupname string, obj string, act string) bool {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -135,7 +133,7 @@ func HasObjByGroup(groupname string, obj string, act string) bool {
 	return en.HasPolicy(groupname, obj, act)
 }
 
-//将用户添加至指定分组
+// 将用户添加至指定分组
 func AddGroup(ptype string, sub string, group string) (bool, error) {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -144,7 +142,7 @@ func AddGroup(ptype string, sub string, group string) (bool, error) {
 	return ok, err
 }
 
-//批量添加用户权限
+// 批量添加用户权限
 func AddGroups(ptype string, rules [][]string, txs ...*gorm.DB) (bool, error) {
 	var en *casbin.Enforcer
 	if len(txs) == 0 {
@@ -159,7 +157,7 @@ func AddGroups(ptype string, rules [][]string, txs ...*gorm.DB) (bool, error) {
 	return ok, err
 }
 
-//通过用户获取所在组
+// 通过用户获取所在组
 func GetGroupByUser(username string) ([]string, error) {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -168,7 +166,7 @@ func GetGroupByUser(username string) ([]string, error) {
 	return privs, err
 }
 
-//验证权限
+// 验证权限
 func Check(sub string, obj string, act string) (bool, error) {
 
 	if sub == "admin" {
@@ -184,7 +182,7 @@ func Check(sub string, obj string, act string) (bool, error) {
 	return ok, err
 }
 
-//删除权限
+// 删除权限
 func DelGroups(ptype string, rules [][]string) (ok bool, err error) {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -192,7 +190,7 @@ func DelGroups(ptype string, rules [][]string) (ok bool, err error) {
 	return
 }
 
-//根据用户组获取权限
+// 根据用户组获取权限
 func GetPoliceByGroup(group string) [][]string {
 	en := GetEnforceObj()
 	defer PutEnforceObj(en)
@@ -200,7 +198,7 @@ func GetPoliceByGroup(group string) [][]string {
 	return en.GetFilteredPolicy(0, group)
 }
 
-//更新用户所属用户组
+// 更新用户所属用户组
 func UpdateGroups(username string, old []string, new []string, tx *gorm.DB) (ok bool, err error) {
 	en := newEnforceObj(tx)
 
@@ -242,7 +240,7 @@ func UpdateGroups(username string, old []string, new []string, tx *gorm.DB) (ok 
 	return
 }
 
-//更新指定用户组的权限
+// 更新指定用户组的权限
 func UpdatePolices(groupname string, old []string, new []string, tx *gorm.DB) (ok bool, err error) {
 	addPolice, increPolice := gstrings.CompareSlice(old, new)
 	en := newEnforceObj(tx)

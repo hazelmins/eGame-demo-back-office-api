@@ -26,14 +26,15 @@ func NewAdminGroupController() adminGroupController {
 }
 
 func (con adminGroupController) Routes(rg *gin.RouterGroup) {
-	rg.GET("/index", con.index)
+	rg.GET("/index", con.index) //列表
 	rg.GET("/add", con.addIndex)
 	rg.POST("/save", con.save)
 	rg.GET("/edit", con.edit)
 	rg.GET("/del", con.del)
 }
 
-/**
+/*
+*
 角色列表
 */
 func (con adminGroupController) index(c *gin.Context) {
@@ -57,7 +58,8 @@ func (con adminGroupController) index(c *gin.Context) {
 	})
 }
 
-/**
+/*
+*
 添加角色
 */
 func (con adminGroupController) addIndex(c *gin.Context) {
@@ -67,12 +69,13 @@ func (con adminGroupController) addIndex(c *gin.Context) {
 	})
 }
 
-/**
+/*
+*
 保存角色
 */
 func (con adminGroupController) save(c *gin.Context) {
 
-	var req models.AdminGroupSaveReq
+	var req models.AdminGroupSaveReq //request內容
 	err := con.FormBind(c, &req)
 	if err != nil {
 		con.Error(c, err.Error())
@@ -98,7 +101,8 @@ func (con adminGroupController) save(c *gin.Context) {
 	con.Success(c, "/admin/setting/admingroup/index", "操作成功")
 }
 
-/**
+/*
+*
 编辑
 */
 func (con adminGroupController) edit(c *gin.Context) {
@@ -109,7 +113,8 @@ func (con adminGroupController) edit(c *gin.Context) {
 	})
 }
 
-/**
+/*
+*
 删除
 */
 func (con adminGroupController) del(c *gin.Context) {

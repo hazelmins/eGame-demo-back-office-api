@@ -1,7 +1,5 @@
 /*
  * @Description:用户相关model
- * @Author: gphper
- * @Date: 2021-07-04 11:58:45
  */
 package models
 
@@ -10,9 +8,11 @@ import (
 
 	"eGame-demo-back-office-api/pkg/mysqlx"
 	"eGame-demo-back-office-api/pkg/utils/strings"
+
 	"gorm.io/gorm"
 )
 
+// Adminuser DB表格
 type AdminUsers struct {
 	mysqlx.BaseModle
 	Uid       uint   `gorm:"primary_key;auto_increment"`
@@ -31,11 +31,13 @@ type AdminUsers struct {
 	UpdatedAt time.Time
 }
 
+// admin列表
 type AdminUserIndexReq struct {
 	Nickname  string `form:"nickname"`
 	CreatedAt string `form:"created_at"`
 }
 
+// 保存admin請求
 type AdminUserSaveReq struct {
 	Username  string   `form:"username" label:"用户名" binding:"required"`
 	Password  string   `form:"password"`
