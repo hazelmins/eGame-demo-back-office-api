@@ -68,6 +68,7 @@ func migrateFunc(cmd *cobra.Command, args []string) {
 
 		// 如果提供了 tables 參數且模型不在 tableMap 中，則跳過該模型
 		if tables != "" {
+			//每個表定義好了在這邊建立
 			if _, ok := tableMap[v.(mysqlx.GaTabler).TableName()]; !ok {
 				continue
 			}

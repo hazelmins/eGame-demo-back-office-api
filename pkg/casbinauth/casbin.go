@@ -289,3 +289,51 @@ func GetRols() []string {
 	roles := en.GetAllRoles()
 	return roles
 }
+
+//指定修改單一user權限
+func UpdateUserPolices(groupname string, username string, old []string, new []string, tx *gorm.DB) (ok bool, err error) {
+	// 根據提供的群組名稱和用戶名，來定位特定的用戶
+	// 此處您可以使用 groupname 和 username 進行定位操作
+
+	addPolice, increPolice := gstrings.CompareSlice(old, new)
+	en := newEnforceObj(tx)
+	defer loadPolicy()
+
+	addLen := len(addPolice)
+	if addLen > 0 {
+		var groupPrivs [][]string
+		for _, v := range addPolice {
+			privSlice := strings.Split(v, ":")
+			groupPrivs = append(groupPrivs, []string{
+				groupname,
+				username, // 使用用戶名進行定位
+				privSlice[0],
+				privSlice[1],
+			})
+		}
+		ok, err = en.AddPolicies(groupPrivs)
+		if !ok || err != nil {
+			return
+		}
+	}
+
+	increLen := len(increPolice)
+	if increLen > 0 {
+		var groupIncrePrivs [][]string
+		for _, v := range increPolice {
+			privSlice := strings.Split(v, ":")
+			groupIncrePrivs = append(groupIncrePrivs, []string{
+				groupname,
+				username, // 使用用戶名進行定位
+				privSlice[0],
+				privSlice[1],
+			})
+		}
+		ok, err = en.RemovePolicies(groupIncrePrivs)
+		if !ok || err != nil {
+			return
+		}
+	}
+
+	return
+}

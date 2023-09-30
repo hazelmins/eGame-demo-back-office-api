@@ -37,7 +37,7 @@ type AdminUserIndexReq struct {
 	CreatedAt string `form:"created_at"`
 }
 
-// 保存admin請求
+// 新增或更新管理員req請求內容
 type AdminUserSaveReq struct {
 	Username  string   `form:"username" label:"用户名" binding:"required"`
 	Password  string   `form:"password"`
@@ -64,8 +64,9 @@ func (au *AdminUsers) TableName() string {
 	return "admin_users"
 }
 
+//建立種子管理員
 func (au *AdminUsers) FillData(db *gorm.DB) {
-	//初始化管理员
+
 	salt := strings.RandString(6)
 	passwordSalt := strings.Encryption("111111", salt)
 	adminUser := AdminUsers{
@@ -74,7 +75,6 @@ func (au *AdminUsers) FillData(db *gorm.DB) {
 		Username:  "admin",
 		Nickname:  "管理员",
 		Password:  passwordSalt,
-		Phone:     "",
 		LastLogin: "",
 		Salt:      salt,
 		ApiToken:  "",

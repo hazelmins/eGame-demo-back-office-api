@@ -1,10 +1,11 @@
 /*
- * @Description:用户组管理 支持多权限管理
+ * @Description:用户组管理 進db管理群組權限內容
  */
 
 package setting
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
@@ -13,6 +14,7 @@ import (
 	"eGame-demo-back-office-api/internal/models"
 	services "eGame-demo-back-office-api/internal/services/admin"
 	"eGame-demo-back-office-api/pkg/casbinauth"
+	"eGame-demo-back-office-api/pkg/paginater"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,11 +28,16 @@ func NewAdminGroupController() adminGroupController {
 }
 
 func (con adminGroupController) Routes(rg *gin.RouterGroup) {
+	//**/admin/setting/admingroup/index **
 	rg.GET("/index", con.index) //列表
 	rg.GET("/add", con.addIndex)
 	rg.POST("/save", con.save)
 	rg.GET("/edit", con.edit)
 	rg.GET("/del", con.del)
+	//***** 進DB的接口 ******
+	rg.POST("/dbindex", con.dbindex) //單一管理員權限列表
+	rg.POST("/dbsave", con.dbsave)   //修改權限
+
 }
 
 /*
@@ -127,3 +134,85 @@ func (con adminGroupController) del(c *gin.Context) {
 		con.Success(c, "", "删除成功")
 	}
 }
+
+//*******************進DB操作權限**********************
+//列出指定admin權限內容
+// 定義 adminGroupController 類型的 index 方法，用於處理 HTTP GET 請求。
+func (con adminGroupController) dbindex(c *gin.Context) {
+
+	var (
+		err            error                     // 用于存储可能出现的错误。
+		req            models.SuperAdminIndexReq // 请求结构，用于从请求中解析参数。
+		adminGropPrivs []models.SuperAdmin       // 群組權限列表，用于存储查询结果。
+	)
+
+	// 使用 con.FormBind 方法解析请求参数并将其存储到 req 变量中。
+	err = con.FormBind(c, &req)
+	if err != nil {
+		// 如果解析参数时出现错误，将错误信息返回给客户端并退出函数。
+		con.ErrorHtml(c, err)
+		return
+	}
+
+	// 从 Gin 上下文中获取请求上下文。
+	ctx, _ := c.Get("ctx")
+
+	// 调用 services.NewAdminGroupService() 创建 adminGroupService 的实例，然后调用其 Dao 属性上的 GetAdminGroup 方法。
+
+	adminGropDb := services.NewAdminGroupService().Dao.GetAdminGroup(ctx.(context.Context), req.GroupName, req.Username)
+
+	// 使用 paginater.PageOperation 方法进行分页处理，将分页结果存储到 adminUserData 和 adminUserList 变量中。
+	admingroupData, err := paginater.PageOperation(c, adminGropDb, 1, &adminGropPrivs)
+	if err != nil {
+		// 如果分页处理出现错误，将错误信息返回给客户端并退出函数。
+		con.ErrorHtml(c, err)
+	}
+
+	// 使用 con.Html 方法返回 HTML 响应，将 adminUserData、c.Query("created_at") 和 c.Query("nickname")
+	//作为模板变量传递给模板文件 "setting/adminuser.html"。
+	con.Html(c, http.StatusOK, "setting/adminuser.html", gin.H{
+		"adminUserPrvis": admingroupData,
+		"username":       c.Query("username"),
+		"groupname":      c.Query("gropuname"),
+	})
+}
+
+//修改指定admin權限
+// 定義 adminGroupController 類型的 save 方法，用於處理 HTTP POST 請求。
+func (con adminGroupController) dbsave(c *gin.Context) {
+	// 声明错误变量和请求结构。
+	var (
+		err error                    // 用于存储可能出现的错误。
+		req models.AdminGroupSaveReq // 请求结构，用于从请求中解析参数。
+	)
+
+	// 使用 con.Bind 方法解析请求参数并将其存储到 req 变量中。
+	if err := c.Bind(&req); err != nil {
+		// 如果解析参数时出现错误，将错误信息返回给客户端并退出函数。
+		con.Error(c, err.Error())
+		return
+	}
+
+	// 调用 services.NewAdminGroupService() 创建 adminGroupService 的实例，然后调用其 SaveGroup 方法来保存或更新群組權限信息。
+	err = services.NewAdminGroupService().SaveDbGroup(req)
+	if err != nil {
+		// 如果保存或更新操作出现错误，将错误信息返回给客户端并退出函数。
+		con.Error(c, err.Error())
+		return
+	}
+
+	// 使用 con.Success 方法返回成功的响应，包括操作成功的消息。
+	con.Success(c, "", "操作成功")
+}
+
+/*
+request body ex
+{
+    "username": "admin",
+    "permissions": {
+        "/admin/setting/adminuser/index:get": true,
+        "/admin/setting/adminuser/add:get": true,
+        "/admin/setting/adminuser/edit:get": true
+    }
+}
+*/

@@ -1,21 +1,24 @@
 /*
- * @Description:用户组服务
+ * @Description:用户组服务 只有單純管理群組 DB中的群組權限
  */
 package admin
 
 import (
+	"encoding/json"
 	"sync"
 
 	"eGame-demo-back-office-api/internal/dao"
 	"eGame-demo-back-office-api/internal/models"
 	"eGame-demo-back-office-api/pkg/casbinauth"
 )
+
 /*
 定義了一個名為 adminGroupService 的結構體，它包含一個指向 dao.AdminGroupDao 的指針 Dao
 */
 type adminGroupService struct {
 	Dao *dao.AdminGroupDao
 }
+
 /*
 定義了兩個變數：
 instanceAdminGroupService：用於存儲單例 adminGroupService 的指針。
@@ -25,6 +28,7 @@ var (
 	instanceAdminGroupService *adminGroupService
 	onceAdminGroupService     sync.Once
 )
+
 /*
 定義了一個名為 NewAdminGroupService 的函式，用於創建並返回 adminGroupService 的單例。
 使用 sync.Once 確保這個函式只會被執行一次，並且在第一次調用時初始化 instanceAdminGroupService。
@@ -43,10 +47,10 @@ func NewAdminGroupService() *adminGroupService {
 func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 	// 從 casbinauth 模組中獲取特定群組的舊角色信息。
 	oldGroup := casbinauth.GetPoliceByGroup(req.GroupName)
-	
+
 	// 計算舊角色信息的數量。
 	oldLen := len(oldGroup)
-	
+
 	// 創建一個字串切片，用於存儲角色信息。
 	oldSlice := make([]string, oldLen)
 
@@ -72,15 +76,51 @@ func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 
 	// 提交事務，確保更改生效。
 	tx.Commit()
-	
+
 	// 如果一切正常，函式返回 nil 表示成功。
 	return nil
 }
-
 
 //删除角色
 func (ser *adminGroupService) DelGroup(id string) (ok bool, err error) {
 	polices := casbinauth.GetPoliceByGroup(id)
 	ok, err = casbinauth.DelGroups("p", polices)
 	return
+}
+
+func (ser *adminGroupService) SaveDbGroup(req models.AdminGroupSaveReq) error {
+	tx := ser.Dao.DB.Begin()
+
+	// 將需要的參數傳遞給 casbinauth.UpdateUserPolices 函數
+	// 注意：這裡傳遞了三個 []string 參數
+	_, err := casbinauth.UpdateUserPolices(req.GroupName, req.Username, req.Privs, []string{}, tx)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 在這裡處理將 req.Privs 映射到 Permissions 字段的邏輯
+	var superAdmin models.SuperAdmin
+	superAdmin.Username = req.Username
+
+	superAdmin.Permissions = make(map[string]bool)
+	for _, priv := range req.Privs {
+		superAdmin.Permissions[priv] = true
+	}
+
+	// 使用 GORM 保存或更新 SuperAdmin 記錄，將 Permissions 映射到 PermissionsJSON 字段
+	permissionsJSON, err := json.Marshal(superAdmin.Permissions)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	superAdmin.PermissionsJSON = string(permissionsJSON)
+
+	if err := tx.Save(&superAdmin).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }

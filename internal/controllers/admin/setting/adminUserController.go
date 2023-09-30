@@ -29,7 +29,7 @@ func NewAdminUserController() adminUserController {
 func (con adminUserController) Routes(rg *gin.RouterGroup) {
 	rg.GET("/index", con.index)
 	rg.GET("/add", con.addIndex)
-	rg.POST("/save", con.save)
+	rg.POST("/save", con.save) //新增或更新管理員
 	rg.GET("/edit", con.edit)
 	rg.GET("/del", con.del)
 }
@@ -91,7 +91,7 @@ func (con adminUserController) addIndex(c *gin.Context) {
 }
 
 /**
-保存
+保存 創建管理員
 */
 // 定義 adminUserController 類型的 save 方法，用於處理 HTTP POST 請求。
 func (con adminUserController) save(c *gin.Context) {
