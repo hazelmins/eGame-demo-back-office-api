@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 
+	"eGame-demo-back-office-api/internal/models"
 	"eGame-demo-back-office-api/pkg/mysqlx"
 
 	"gorm.io/gorm"
@@ -30,6 +31,10 @@ func NewAdminGroupDao() *AdminGroupDao {
 	// 返回 instanceAdminGroup 的指針。
 	return instanceAdminGroup
 }
+
+/*
+*進DB依照群組跟玩家撈取權限返回
+ */
 func (dao *AdminGroupDao) GetAdminGroup(ctx context.Context, groupName string, username string) *gorm.DB {
 	// 創建一個初始的數據庫查詢對象
 	db := dao.DB.WithContext(ctx).Table("super_admin")
@@ -45,4 +50,23 @@ func (dao *AdminGroupDao) GetAdminGroup(ctx context.Context, groupName string, u
 
 	// 返回數據庫查詢對象，以便在其他地方進行進一步操作
 	return db
+}
+
+/*
+*單純進db撈群組資料返回沒有任何條件設定
+ */
+func (dao *AdminGroupDao) GetGroupIndex(ctx context.Context) *gorm.DB {
+	// 创建一个初始的数据库查询对象
+	db := dao.DB.WithContext(ctx).Table("super_admin")
+
+	// 执行查询
+	var results []map[string]interface{}
+	db = db.Select("group_name, permissions_json").Find(&results)
+
+	// 返回查询结果
+	return db
+}
+func (dao *SuperAdminDao) GetPermissionsByGroupName(groupName string) (permissions []models.SuperAdmin, err error) {
+	err = dao.DB.Where("groupname = ?", groupName).Find(&permissions).Error
+	return
 }

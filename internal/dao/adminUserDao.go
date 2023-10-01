@@ -17,6 +17,10 @@ type AdminUserDao struct {
 	DB *gorm.DB
 }
 
+type SuperAdminDao struct {
+	DB *gorm.DB
+}
+
 var (
 	instanceAdminUser *AdminUserDao
 	onceAdminUserDao  sync.Once
@@ -29,8 +33,9 @@ func NewAdminUserDao() *AdminUserDao {
 	return instanceAdminUser
 }
 
+// 關聯了GroupName
 func (dao *AdminUserDao) GetAdminUser(conditions map[string]interface{}) (adminUser models.AdminUsers, err error) {
-	err = dao.DB.Where(conditions).First(&adminUser).Error //在這邊join
+	err = dao.DB.Where(conditions).Preload("GroupName").First(&adminUser).Error
 	return
 }
 

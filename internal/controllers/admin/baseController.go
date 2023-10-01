@@ -34,19 +34,15 @@ func (Base BaseController) Success(c *gin.Context, url string, message string) {
 	})
 }
 
-/*
-func (con adminGroupController) Success(c *gin.Context, username string, privs []string) {
-    // 构建成功响应数据，包括用户名和权限
-    responseData := gin.H{
-        "username": username,
-        "privs":    privs,
-    }
-
-    // 使用 JSON 格式返回成功响应
-    c.JSON(http.StatusOK, responseData)
+type SuperAdmin struct {
+	GroupName   string          `json:"group_name"`
+	Permissions map[string]bool `json:"permissions"`
 }
 
-*/
+func (con BaseController) Index(c *gin.Context, data interface{}) {
+	// 使用 JSON 格式返回成功响应
+	c.JSON(http.StatusOK, data)
+}
 
 func (Base BaseController) Error(c *gin.Context, message string) {
 	c.JSON(http.StatusOK, gin.H{

@@ -41,7 +41,7 @@ func (con loginController) Routes(rg *gin.RouterGroup) {
 	rg.POST("/login_out", con.loginOut)
 }
 
-/**
+/*
 * 登录
  */
 func (con loginController) login(c *gin.Context) {
@@ -71,6 +71,19 @@ func (con loginController) login(c *gin.Context) {
 			con.Error(c, "無此管理員")
 			return
 		}
+
+		// 獲取GroupName
+		groupName := adminUser.GroupName
+
+		// 進行關聯查詢以獲取權限
+		permissions, err := services.NewAdminGroupService().GetPermissionsByGroupName(groupName)
+		if err != nil {
+			con.Error(c, "無法獲取權限")
+			return
+		}
+
+		// 現在您可以在permissions中獲得groupname的權限
+
 		//判断密码是否正确
 		if gstrings.Encryption(password, adminUser.Salt) == adminUser.Password {
 			// 如果密碼驗證成功，創建用戶信息字典

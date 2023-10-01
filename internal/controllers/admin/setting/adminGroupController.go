@@ -35,8 +35,9 @@ func (con adminGroupController) Routes(rg *gin.RouterGroup) {
 	rg.GET("/edit", con.edit)
 	rg.GET("/del", con.del)
 	//***** 進DB的接口 ******
-	rg.POST("/dbindex", con.dbindex) //單一管理員權限列表
-	rg.POST("/dbsave", con.dbsave)   //修改權限
+	rg.POST("/dbindex", con.dbindex)       //單一管理員權限列表
+	rg.POST("/dbsave", con.dbsave)         //修改權限
+	rg.POST("/onlyindex", con.onlydbindex) //暴力列全部權限
 
 }
 
@@ -135,8 +136,8 @@ func (con adminGroupController) del(c *gin.Context) {
 	}
 }
 
-//*******************進DB操作權限**********************
-//列出指定admin權限內容
+// *******************進DB操作權限**********************
+// 列出指定admin權限內容
 // 定義 adminGroupController 類型的 index 方法，用於處理 HTTP GET 請求。
 func (con adminGroupController) dbindex(c *gin.Context) {
 
@@ -177,7 +178,38 @@ func (con adminGroupController) dbindex(c *gin.Context) {
 	})
 }
 
-//修改指定admin權限
+/*
+*從db撈所有群組跟權限
+ */
+type SuperAdmin struct {
+	GroupName       string          `json:"group_name"`
+	PermissionsJSON map[string]bool `json:"permissions"`
+}
+
+func (con adminGroupController) onlydbindex(c *gin.Context) {
+	var (
+		err             error
+		adminGroupPrivs []SuperAdmin
+	)
+
+	// 从 Gin 上下文中获取请求上下文。
+	ctx, _ := c.Get("ctx")
+
+	// 调用 services.NewAdminGroupService() 创建 adminGroupService 的实例，然后调用其 Dao 属性上的 GetGroupIndex 方法。
+	adminGropDb := services.NewAdminGroupService().Dao.GetGroupIndex(ctx.(context.Context))
+
+	// 使用 paginater.PageOperation 方法进行分页处理，将分页结果存储到 adminUserData 和 adminUserList 变量中。
+	_, err = paginater.PageOperation(c, adminGropDb, 1, &adminGroupPrivs)
+	if err != nil {
+		// 如果分页处理出现错误，将错误信息返回给客户端并退出函数。
+		con.ErrorHtml(c, err)
+		return
+	}
+
+	con.Index(c, adminGroupPrivs)
+}
+
+// ****************需要大改的地方 修改指定admin權限******************************
 // 定義 adminGroupController 類型的 save 方法，用於處理 HTTP POST 請求。
 func (con adminGroupController) dbsave(c *gin.Context) {
 	// 声明错误变量和请求结构。
