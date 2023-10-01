@@ -61,7 +61,7 @@ func seedFunc(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	// 遍歷所有模型，可能是用於數據庫表格的模型
+	// GetModels 中列了所以的TABLE 在這裡阿鄉親
 	for _, v := range models.GetModels() {
 
 		// 如果提供了 tableSeed 且模型不在 tableMap 中，則跳過該模型

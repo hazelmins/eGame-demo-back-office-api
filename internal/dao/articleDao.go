@@ -6,8 +6,8 @@
 package dao
 
 import (
-	"strings"
 	"sync"
+	"time"
 
 	"eGame-demo-back-office-api/internal/models"
 	"eGame-demo-back-office-api/pkg/mysqlx"
@@ -37,19 +37,20 @@ func (dao *ArticleDao) GetArticle(conditions map[string]interface{}) (article mo
 	return
 }
 
-func (dao *ArticleDao) GetArticles(title string, createdAt string) (db *gorm.DB) {
-
+func (dao *ArticleDao) GetArticles(title string, createdAt int64) (db *gorm.DB) {
 	db = dao.DB.Table("article")
 
 	if title != "" {
-		db = db.Where("title like ?", "%"+title+"%")
+		db = db.Where("title LIKE ?", "%"+title+"%")
 	}
 
-	if createdAt != "" {
-		period := strings.Split(createdAt, " ~ ")
-		start := period[0] + " 00:00:00"
-		end := period[1] + " 23:59:59"
-		db = db.Where("created_at > ? ", start).Where("created_at < ?", end)
+	if createdAt != 0 {
+		// 将时间戳转换为时间对象
+		startTime := time.Unix(createdAt, 0)
+		endTime := startTime.Add(24 * time.Hour).Add(-time.Second)
+
+		// 添加创建时间的过滤条件
+		db = db.Where("created_at BETWEEN ? AND ?", startTime, endTime)
 	}
 
 	return

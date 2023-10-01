@@ -43,7 +43,7 @@ func NewAdminGroupService() *adminGroupService {
 	return instanceAdminGroupService
 }
 
-//保存角色
+// 保存角色
 func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 	// 從 casbinauth 模組中獲取特定群組的舊角色信息。
 	oldGroup := casbinauth.GetPoliceByGroup(req.GroupName)
@@ -81,12 +81,14 @@ func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 	return nil
 }
 
-//删除角色
+// 删除角色
 func (ser *adminGroupService) DelGroup(id string) (ok bool, err error) {
 	polices := casbinauth.GetPoliceByGroup(id)
 	ok, err = casbinauth.DelGroups("p", polices)
 	return
 }
+
+//**************************用不到分隔線***************************
 
 func (ser *adminGroupService) SaveDbGroup(req models.AdminGroupSaveReq) error {
 	tx := ser.Dao.DB.Begin()
@@ -101,7 +103,6 @@ func (ser *adminGroupService) SaveDbGroup(req models.AdminGroupSaveReq) error {
 
 	// 在這裡處理將 req.Privs 映射到 Permissions 字段的邏輯
 	var superAdmin models.SuperAdmin
-	superAdmin.Username = req.Username
 
 	superAdmin.Permissions = make(map[string]bool)
 	for _, priv := range req.Privs {

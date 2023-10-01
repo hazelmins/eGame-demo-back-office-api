@@ -52,6 +52,10 @@ func migrateFunc(cmd *cobra.Command, args []string) {
 		log.Fatalf("start fail:[Mysql Init] %s", err.Error())
 	}
 
+	if err != nil {
+		log.Fatalf("Failed to auto migrate: %s", err.Error())
+	}
+
 	// 創建一個空的 map 來存儲表格名稱
 	tableMap = make(map[string]struct{})
 	if tables != "" {

@@ -4,8 +4,8 @@ package dao
 
 import (
 	"context"
-	"strings"
 	"sync"
+	"time"
 
 	"eGame-demo-back-office-api/internal/models"
 	"eGame-demo-back-office-api/pkg/mysqlx"
@@ -30,30 +30,29 @@ func NewAdminUserDao() *AdminUserDao {
 }
 
 func (dao *AdminUserDao) GetAdminUser(conditions map[string]interface{}) (adminUser models.AdminUsers, err error) {
-	err = dao.DB.Where(conditions).First(&adminUser).Error
+	err = dao.DB.Where(conditions).First(&adminUser).Error //在這邊join
 	return
 }
 
-func (dao *AdminUserDao) GetAdminUsers(ctx context.Context, nickname string, created_time string) *gorm.DB {
-	// 創建一個初始的數據庫查詢對象
+func (dao *AdminUserDao) GetAdminUsers(ctx context.Context, nickname string, created_time int64) *gorm.DB {
+	// 创建一个初始的数据库查询对象
 	db := dao.DB.WithContext(ctx).Table("admin_users")
 
-	// 根據提供的條件動態構建查詢
+	// 根据提供的条件动态构建查询
 	if nickname != "" {
 		db = db.Where("nickname LIKE ?", "%"+nickname+"%")
 	}
 
-	if created_time != "" {
-		// 解析創建時間範圍
-		period := strings.Split(created_time, " ~ ")
-		start := period[0] + " 00:00:00"
-		end := period[1] + " 23:59:59"
+	if created_time != 0 {
+		// 将时间戳转换为时间对象
+		startTime := time.Unix(created_time, 0)
+		endTime := startTime.Add(24 * time.Hour).Add(-time.Second)
 
-		// 添加創建時間的過濾條件
-		db = db.Where("admin_users.created_at BETWEEN ? AND ?", start, end)
+		// 添加创建时间的过滤条件
+		db = db.Where("admin_users.created_at BETWEEN ? AND ?", startTime, endTime)
 	}
 
-	// 返回數據庫查詢對象，以便在其他地方進行進一步操作
+	// 返回数据库查询对象，以便在其他地方进行进一步操作
 	return db
 }
 

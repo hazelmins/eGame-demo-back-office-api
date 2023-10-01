@@ -4,7 +4,12 @@
 
 package models
 
-import "eGame-demo-back-office-api/pkg/mysqlx"
+import (
+	"eGame-demo-back-office-api/pkg/mysqlx"
+	"log"
+
+	"gorm.io/gorm"
+)
 
 type AdminGroupSaveReq struct {
 	Privs     []string `form:"privs[]" label:"权限" json:"privs" binding:"required"`
@@ -13,26 +18,17 @@ type AdminGroupSaveReq struct {
 	GroupId   uint     `form:"groupid"`
 }
 
-//speradmin DB表格建立
+// speradmin DB表格建立
 type SuperAdmin struct {
-	// 嵌入 mysqlx.BaseModle 以包含通用的數據庫字段，如 ID、創建時間和更新時間。
 	mysqlx.BaseModle
-
-	// 使用 GORM 標籤定義 UID 字段作為主鍵，並自動增加。
-	Uid uint `gorm:"primary_key;auto_increment"`
-
-	// 定義用戶名欄位。
-	Username string `gorm:"size:100;comment:'用户名'"`
-
-	// 定義權限字段，使用映射來存儲權限路徑和布爾值。
-	Permissions map[string]bool `gorm:"-"`
-
-	// 您可以在數據庫中定義一個 JSON 或其他適合的數據庫欄位來存儲權限信息。
-	// 以下示例使用 JSON 字段來存儲權限信息。
-	PermissionsJSON string `gorm:"type:json"`
+	GroupName       string          `gorm:"size:20;comment:'用户组名称'"`
+	Permissions     map[string]bool `gorm:"-"`
+	PermissionsJSON string          `gorm:"type:json"`
+	CreatedAt       int64           `gorm:"type:bigint"`
+	UpdatedAt       int64           `gorm:"type:bigint"`
 }
 
-//superadmin表名稱
+// superadmin表名稱
 func (au *SuperAdmin) TableName() string {
 	return "super_admin"
 }
@@ -47,4 +43,30 @@ type SuperAdminSaveReq struct {
 	Username    string `form:"username" label:"用户名" binding:"required"`
 	Uid         uint   `form:"uid"`
 	Permissions map[string]bool
+}
+
+// 建立種子admin權限內容
+func (au *SuperAdmin) FillData(db *gorm.DB) {
+	permissionsJSON := `{"permissions": {
+		"/admin/setting/adminuser/index:get": true,
+		"/admin/setting/adminuser/add:get": true,
+		"/admin/setting/adminuser/edit:get": true
+	}}`
+
+	superAdmin := SuperAdmin{
+		GroupName:       "superadmin", // 添加用户组名称
+		PermissionsJSON: permissionsJSON,
+	}
+
+	// 使用 Create 方法插入数据
+	if err := db.Create(&superAdmin).Error; err != nil {
+		// 处理错误，例如记录日志或返回错误信息
+		log.Fatalf("Failed to insert superAdmin: %s", err.Error())
+	} else {
+		// 插入成功
+		log.Println("SuperAdmin inserted successfully")
+	}
+}
+func (au *SuperAdmin) GetConnName() string {
+	return "default"
 }

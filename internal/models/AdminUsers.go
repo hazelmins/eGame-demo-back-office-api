@@ -4,8 +4,6 @@
 package models
 
 import (
-	"time"
-
 	"eGame-demo-back-office-api/pkg/mysqlx"
 	"eGame-demo-back-office-api/pkg/utils/strings"
 
@@ -27,14 +25,14 @@ type AdminUsers struct {
 	Header    string `gorm:"size:20;comment:'头部皮肤'"`
 	Logo      string `gorm:"size:20;comment:'logo皮肤'"`
 	Side      string `gorm:"size:20;comment:'侧边栏皮肤'"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt int64  `gorm:"type:bigint"`
+	UpdatedAt int64  `gorm:"type:bigint"`
 }
 
 // admin列表
 type AdminUserIndexReq struct {
 	Nickname  string `form:"nickname"`
-	CreatedAt string `form:"created_at"`
+	CreatedAt int64  `form:"created_at"`
 }
 
 // 新增或更新管理員req請求內容
@@ -64,7 +62,7 @@ func (au *AdminUsers) TableName() string {
 	return "admin_users"
 }
 
-//建立種子管理員
+// 建立種子管理員
 func (au *AdminUsers) FillData(db *gorm.DB) {
 
 	salt := strings.RandString(6)

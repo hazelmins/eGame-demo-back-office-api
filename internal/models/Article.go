@@ -6,9 +6,8 @@
 package models
 
 import (
-	"time"
-
 	"eGame-demo-back-office-api/pkg/mysqlx"
+
 	"gorm.io/gorm"
 )
 
@@ -19,13 +18,13 @@ type Article struct {
 	Desc      string `gorm:"size:100;comment:'描述'"`
 	CoverImg  string `gorm:"size:100;comment:'封面图'"`
 	Content   string `gorm:"type:text;comment:'文章内容'"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt int64  `gorm:"type:bigint"`
+	UpdatedAt int64  `gorm:"type:bigint"`
 }
 
 type ArticleIndexReq struct {
 	Title     string `form:"title"`
-	CreatedAt string `form:"created_at"`
+	CreatedAt int64  `form:"created_at"`
 }
 
 type ArticleReq struct {

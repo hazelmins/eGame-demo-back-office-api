@@ -11,6 +11,7 @@ import (
 
 	"eGame-demo-back-office-api/configs"
 	"eGame-demo-back-office-api/pkg/loggers"
+
 	"gorm.io/driver/mysql"
 
 	"gorm.io/gorm"
@@ -77,6 +78,10 @@ func Init() error {
 
 	return nil
 
+}
+
+func GetDBByName(databaseName string) *gorm.DB {
+	return mapDB[databaseName]
 }
 
 func RegisterCallback(db *gorm.DB) {

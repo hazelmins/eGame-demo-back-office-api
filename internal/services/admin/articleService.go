@@ -1,8 +1,7 @@
 /*
  * @Description:
- * @Author: gphper
- * @Date: 2021-11-14 13:29:28
- */
+*這邊有註解掉重要資訊GetArticles方法
+*/
 package admin
 
 import (
@@ -42,7 +41,7 @@ func (ser *articleService) GetArticles(req models.ArticleIndexReq) (db *gorm.DB)
 	return ser.Dao.GetArticles(req.Title, req.CreatedAt)
 }
 
-//添加或保存文章信息
+// 添加或保存文章信息
 func (ser *articleService) SaveArticle(req models.ArticleReq) (err error) {
 
 	var (
