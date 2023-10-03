@@ -34,6 +34,21 @@ func (Base BaseController) Success(c *gin.Context, url string, message string) {
 	})
 }
 
+func (Base BaseController) Success2(c *gin.Context, url string, message string, permissions map[string]bool) {
+	responseData := gin.H{
+		"status":      true,
+		"msg":         message,
+		"url":         url,
+		"iframe_jump": false,
+	}
+
+	if permissions != nil {
+		responseData["permissions"] = permissions
+	}
+
+	c.JSON(http.StatusOK, responseData)
+}
+
 type SuperAdmin struct {
 	GroupName   string          `json:"group_name"`
 	Permissions map[string]bool `json:"permissions"`

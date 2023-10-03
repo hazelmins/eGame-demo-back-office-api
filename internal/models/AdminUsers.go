@@ -14,7 +14,7 @@ import (
 type AdminUsers struct {
 	mysqlx.BaseModle
 	Uid       uint   `gorm:"primary_key;auto_increment"`
-	GroupName string `gorm:"size:20;comment:'用户组名称'"`
+	GroupName string `gorm:"size:20;column:groupname"` // 假設groupname欄位名稱是'groupname'
 	Username  string `gorm:"size:100;comment:'用户名'"`
 	Nickname  string `gorm:"size:100;comment:'姓名'"`
 	Password  string `gorm:"size:200;comment:'密码'"`

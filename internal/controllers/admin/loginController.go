@@ -75,10 +75,9 @@ func (con loginController) login(c *gin.Context) {
 		// 獲取GroupName
 		groupName := adminUser.GroupName
 
-		// 進行關聯查詢以獲取權限
-		permissions, err := services.NewAdminGroupService().GetPermissionsByGroupName(groupName)
+		permissions, err := services.NewAdminGroupService().GetAdminGroup(groupName)
 		if err != nil {
-			con.Error(c, "無法獲取權限")
+			con.Error(c, "無此管理組")
 			return
 		}
 
@@ -91,6 +90,7 @@ func (con loginController) login(c *gin.Context) {
 			userInfo["uid"] = adminUser.Uid
 			userInfo["username"] = adminUser.Username
 			userInfo["groupname"] = adminUser.GroupName
+			userInfo["permissions"] = permissions
 
 			// 將用戶信息序列化為 JSON 字符串
 			userstr, _ := json.Marshal(userInfo)
@@ -111,7 +111,7 @@ func (con loginController) login(c *gin.Context) {
 			session.Save()
 
 			// 登录成功，重定向到 /admin/home 并显示成功消息
-			con.Success(c, "/admin/home", "登录成功")
+			con.Success2(c, "/admin/home", "登录成功", permissions)
 		} else {
 			// 登录失败，显示错误消息
 			con.Error(c, "账号密码错误")

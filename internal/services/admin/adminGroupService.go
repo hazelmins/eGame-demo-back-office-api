@@ -43,6 +43,21 @@ func NewAdminGroupService() *adminGroupService {
 	return instanceAdminGroupService
 }
 
+func (ser *adminGroupService) GetAdminGroup(groupName string) (permissions map[string]bool, err error) {
+	// 在方法內部使用groupName來查詢相關權限
+	adminGroup, err := ser.Dao.GetPermissionsByGroupName(groupName)
+	if err != nil {
+		return nil, err
+	}
+
+	// 解析JSON權限數據
+	if err := json.Unmarshal([]byte(adminGroup.PermissionsJSON), &permissions); err != nil {
+		return nil, err
+	}
+
+	return permissions, nil
+}
+
 // 保存角色
 func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 	// 從 casbinauth 模組中獲取特定群組的舊角色信息。
