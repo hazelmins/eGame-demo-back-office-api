@@ -1,0 +1,145 @@
+{{define "bodyattr"}}class="gray-bg"{{end}}
+
+{{define "head"}}
+    <style type="text/css">
+        .treeview span.indent {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .treeview span.icon {
+            width: 12px;
+            margin-right: 5px;
+        }
+    </style>
+{{end}}
+
+{{define "body"}}
+<div class="container-fluid m-t-15">
+  
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-toolbar clearfix">
+            <div class="toolbar-btn-action">
+              <a class="btn btn-cyan m-r-5" onclick="javascript:location.href=document.referrer"><i class="mdi mdi-keyboard-backspace"></i> 返回</a>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <form action="/admin/setting/admingroup/save" method="post" class="ajaxForm">
+              <input type="hidden" name="groupid" value="{{.id}}">
+              <div class="form-group">
+                <label for="example-text-input">角色名称</label>
+                {{if $.id}}
+                <input class="form-control" type="text" name="groupname" disabled placeholder="角色名称" value="{{.id}}">
+                <input type="hidden" name="groupname" value="{{.id}}">
+                {{else}}
+                  <input class="form-control" type="text" name="groupname" placeholder="角色名称" value="{{.id}}">
+                {{end}}
+              </div>
+              <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody>
+                {{range $k,$v := .menuList}}
+                  <tr>
+                    <td>
+                      <label class="lyear-checkbox checkbox-primary">
+                        <input name="privs[]" type="checkbox" class="checkbox-parent" dataid="id-{{$k}}" {{if judgeContainPriv $.id .MenuPriv .MenuPrivAct}}checked{{end}} value="{{.MenuPriv}}:{{.MenuPrivAct}}">
+                        <span> {{.MenuText}}</span>
+                      </label>
+                    </td>
+                  </tr>
+                  {{range $kk,$vv := .Nodes}}
+                  <tr>
+                    <td class="p-l-20">
+                      <label class="lyear-checkbox checkbox-primary">
+                        <input name="privs[]" type="checkbox" class="checkbox-parent checkbox-child" dataid="id-{{$k}}-{{$kk}}" {{if judgeContainPriv $.id .NodePriv .NodePrivAct}}checked{{end}} value="{{.NodePriv}}:{{.NodePrivAct}}">
+                        <span> {{.NodeText}}</span>
+                      </label>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td class="p-l-40">
+                      {{range $kkk,$vvv := .PrivChild}}
+                      <label class="lyear-checkbox checkbox-primary checkbox-inline">
+                        <input name="privs[]" type="checkbox" class="checkbox-child" dataid="id-{{$k}}-{{$kk}}-{{$kkk}}" {{if judegContainSlicePriv $.id .NodeSonPriv}}checked{{end}} value="{{joinSlicePriv .NodeSonPriv}}">
+                        <span> {{.NodeSonText}}</span>
+                      </label>
+                      {{end}}
+                    </td>
+                  </tr>
+                  
+                  {{end}}
+                {{end}}
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button class="btn btn-primary" type="submit">保存</button>
+                        <button class="btn btn-white" type="reset">重置</button>
+                    </div>
+                </div>
+            </div>
+
+            </form>
+            
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+{{end}}
+
+
+{{define "script"}}
+<script type="text/javascript" src="/statics/js/main.min.js"></script>
+<script type="text/javascript" src="/statics/js/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+// console.log(ifr);
+// ifr.console
+// ifr.src = 'http://www.baidu.com';
+// window.location.reload(true)
+$(function(){
+    //动态选择框，上下级选中状态变化
+    $('input.checkbox-parent').on('change', function(){
+        var dataid = $(this).attr("dataid");
+        $('input[dataid^=' + dataid + '-]').prop('checked', $(this).is(':checked'));
+    });
+    $('input.checkbox-child').on('change', function(){
+        var dataid = $(this).attr("dataid");
+            dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+        var parent = $('input[dataid=' + dataid + ']');
+        if($(this).is(':checked')){
+            parent.prop('checked', true);
+            //循环到顶级
+            while(dataid.lastIndexOf("-") != 2){
+                dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                parent = $('input[dataid=' + dataid + ']');
+                parent.prop('checked', true);
+            }
+        }else{
+            //父级
+            if($('input[dataid^=' + dataid + '-]:checked').length == 0){
+                parent.prop('checked', false);
+                //循环到顶级
+                while(dataid.lastIndexOf("-") != 2){
+                    dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                    parent = $('input[dataid=' + dataid + ']');
+                    if($('input[dataid^=' + dataid + '-]:checked').length == 0){
+                        parent.prop('checked', false);
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{{end}}
