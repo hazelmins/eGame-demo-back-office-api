@@ -35,7 +35,7 @@ func NewAdminUserDao() *AdminUserDao {
 
 // 關聯了GroupName 為了在login返回權限
 func (dao *AdminUserDao) GetAdminUser(conditions map[string]interface{}) (adminUser models.AdminUsers, err error) {
-	err = dao.DB.Where(conditions).Preload("GroupName").First(&adminUser).Error
+	err = dao.DB.Where(conditions).First(&adminUser).Error
 	return
 }
 

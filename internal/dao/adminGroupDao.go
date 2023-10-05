@@ -68,6 +68,6 @@ func (dao *AdminGroupDao) GetGroupIndex(ctx context.Context) *gorm.DB {
 }
 
 func (dao *AdminGroupDao) GetPermissionsByGroupName(groupName string) (permission models.SuperAdmin, err error) {
-	err = dao.DB.Where("groupname = ?", groupName).First(&permission).Error
+	err = dao.DB.Where("group_name = ?", groupName).First(&permission).Error
 	return
 }

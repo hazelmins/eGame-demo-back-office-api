@@ -21,7 +21,7 @@ type AdminGroupSaveReq struct {
 // speradmin DB表格建立
 type SuperAdmin struct {
 	mysqlx.BaseModle
-	GroupName       string          `gorm:"size:20;comment:'用户组名称'"`
+	GroupName       string          `gorm:"column:group_name"` // 使用標籤指定列名
 	Permissions     map[string]bool `gorm:"-"`
 	PermissionsJSON string          `gorm:"type:json"`
 	CreatedAt       int64           `gorm:"type:bigint"`

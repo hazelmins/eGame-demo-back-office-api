@@ -71,6 +71,8 @@ func (con loginController) login(c *gin.Context) {
 			con.Error(c, "無此管理員")
 			return
 		}
+		// 打印 adminUser 的內容
+		//fmt.Printf("adminUser 的內容：%+v\n", adminUser)
 
 		// 獲取GroupName
 		groupName := adminUser.GroupName
@@ -85,17 +87,17 @@ func (con loginController) login(c *gin.Context) {
 
 		//判断密码是否正确
 		if gstrings.Encryption(password, adminUser.Salt) == adminUser.Password {
+			token := uuid.New().String()
+			token = strings.Replace(token, "-", "", -1)
 			// 如果密碼驗證成功，創建用戶信息字典
 			userInfo := make(map[string]interface{})
 			userInfo["uid"] = adminUser.Uid
 			userInfo["username"] = adminUser.Username
 			userInfo["groupname"] = adminUser.GroupName
 			userInfo["permissions"] = permissions
-
+			userInfo["token"] = token // 替换为实际的 token
 			// 將用戶信息序列化為 JSON 字符串
 			userstr, _ := json.Marshal(userInfo)
-			token := uuid.New().String()
-			token = strings.Replace(token, "-", "", -1)
 
 			// 將 JSON 字符串存儲到 Redis 中
 			redisClient := redisx.GetRedisClient()
@@ -111,7 +113,7 @@ func (con loginController) login(c *gin.Context) {
 			session.Save()
 
 			// 登录成功，重定向到 /admin/home 并显示成功消息
-			con.Success2(c, "/admin/home", "登录成功", permissions)
+			con.Success2(c, "login success", permissions, adminUser.Username, adminUser.GroupName, userInfo["token"].(string))
 		} else {
 			// 登录失败，显示错误消息
 			con.Error(c, "账号密码错误")

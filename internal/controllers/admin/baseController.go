@@ -34,23 +34,21 @@ func (Base BaseController) Success(c *gin.Context, url string, message string) {
 	})
 }
 
-func (Base BaseController) Success2(c *gin.Context, url string, message string, permissions map[string]bool) {
+func (Base BaseController) Success2(c *gin.Context, message string, permissions map[string]bool, username string, groupname string, token string) {
 	responseData := gin.H{
 		"status":      true,
 		"msg":         message,
-		"url":         url,
-		"iframe_jump": false,
-	}
-
-	if permissions != nil {
-		responseData["permissions"] = permissions
+		"permissions": permissions,
+		"username":    username,  // 将 username 添加到 responseData 中
+		"groupname":   groupname, // 将 groupname 添加到 responseData 中
+		"token":       token,     // 将 token 添加到 responseData 中
 	}
 
 	c.JSON(http.StatusOK, responseData)
 }
 
 type SuperAdmin struct {
-	GroupName   string          `json:"group_name"`
+	GroupName   string          `gorm:"column:group_name"` // 使用標籤指定列名
 	Permissions map[string]bool `json:"permissions"`
 }
 

@@ -5,6 +5,7 @@ package admin
 
 import (
 	"encoding/json"
+	"fmt"
 	"sync"
 
 	"eGame-demo-back-office-api/internal/dao"
@@ -43,19 +44,28 @@ func NewAdminGroupService() *adminGroupService {
 	return instanceAdminGroupService
 }
 
-func (ser *adminGroupService) GetAdminGroup(groupName string) (permissions map[string]bool, err error) {
-	// 在方法內部使用groupName來查詢相關權限
+type Permissions struct {
+	Permissions map[string]bool `json:"permissions"`
+}
+
+func (ser *adminGroupService) GetAdminGroup(groupName string) (map[string]bool, error) {
 	adminGroup, err := ser.Dao.GetPermissionsByGroupName(groupName)
 	if err != nil {
+		fmt.Printf("GORM 查詢錯誤：%v\n", err)
 		return nil, err
 	}
 
-	// 解析JSON權限數據
-	if err := json.Unmarshal([]byte(adminGroup.PermissionsJSON), &permissions); err != nil {
+	// 创建一个 Permissions 结构来解析 JSON 数据
+	var permissions Permissions
+
+	err = json.Unmarshal([]byte(adminGroup.PermissionsJSON), &permissions)
+	if err != nil {
+		fmt.Printf("解析 JSON 錯誤：%v\n", err)
 		return nil, err
 	}
 
-	return permissions, nil
+	// 返回解析后的权限数据
+	return permissions.Permissions, nil
 }
 
 // 保存角色
