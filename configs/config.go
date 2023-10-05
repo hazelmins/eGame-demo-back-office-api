@@ -1,12 +1,19 @@
 //go:build !embed
 
+/*
+ * @Description:
+ * @Author: gphper
+ * @Date: 2021-07-04 11:58:45
+ */
+
 package configs
 
 import (
-	"eGame-demo-back-office-api/pkg/utils/filesystem"
 	"flag"
 	"io/ioutil"
 	"testing"
+
+	"eGame-demo-back-office-api/pkg/utils/filesystem"
 
 	"gopkg.in/yaml.v2"
 )
@@ -30,8 +37,6 @@ type MysqlConf struct {
 	MaxOpenConn int    `yaml:"max_open_conn" json:"max_open_conn"`
 	MaxIdleConn int    `yaml:"max_idle_conn" json:"max_idle_conn"`
 }
-
-var Login *RedisConf
 
 type RedisConf struct {
 	Addr     string `yaml:"addr"`

@@ -1,7 +1,5 @@
 /*
- * @Description:
- * @Author: gphper
- * @Date: 2022-03-27 10:58:44
+ * @Description:string轉換包
  */
 package strings
 
@@ -14,7 +12,8 @@ import (
 	"time"
 )
 
-/**
+/*
+*
 生成随机字符串
 */
 func RandString(len int) string {
@@ -27,7 +26,8 @@ func RandString(len int) string {
 	return string(bytes)
 }
 
-/**
+/*
+*
 密码加密
 */
 func Encryption(password string, salt string) string {

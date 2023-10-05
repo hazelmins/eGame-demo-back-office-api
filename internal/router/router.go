@@ -1,8 +1,4 @@
 /**
- * @Author: GPHPER
- * @Date: 2022-12-12 15:06:04
- * @Github: https://github.com/gphper
- * @LastEditTime: 2022-12-13 19:51:24
  * @FilePath: \ginadmin\internal\router\router.go
  * @Description:
  */
@@ -10,12 +6,10 @@ package router
 
 import (
 	"net/http"
-	"os"
 
 	"eGame-demo-back-office-api/internal"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gphper/multitemplate"
 )
 
 type Router struct {
@@ -30,39 +24,6 @@ func NewRouter(r *gin.Engine) Router {
 
 func (route Router) SetGlobalMiddleware(middlewares ...gin.HandlerFunc) {
 	route.r.Use(middlewares...)
-}
-
-// 设置自定义模板加载
-func (route Router) SetHtmlRenderer(render multitemplate.Renderer) {
-	route.r.HTMLRender = render
-}
-
-// 设置swagger访问
-func (route Router) SetSwaagerHandle(path string, handle gin.HandlerFunc) {
-	route.r.GET(path, handle)
-}
-
-// 设置静态路径
-func (route Router) SetStaticFile(path string, fs http.FileSystem) {
-	route.r.StaticFS(path, fs)
-}
-
-// 设置附件保存地址
-func (route Router) SetUploadDir(path string) error {
-	_, err := os.Stat(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			err = os.Mkdir(path, os.ModeDir)
-			if err != nil {
-
-				return err
-			}
-		}
-	}
-
-	route.r.StaticFS("/uploadfile", http.Dir(path))
-
-	return nil
 }
 
 func (route Router) SetEngine(app *internal.Application) {

@@ -7,10 +7,7 @@ package router
 
 import (
 	"eGame-demo-back-office-api/internal/controllers/admin"
-	"eGame-demo-back-office-api/internal/controllers/admin/article"
-	"eGame-demo-back-office-api/internal/controllers/admin/demo"
 	"eGame-demo-back-office-api/internal/controllers/admin/setting"
-	"eGame-demo-back-office-api/internal/controllers/admin/upload"
 	"eGame-demo-back-office-api/internal/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -51,32 +48,6 @@ func (ar AdminRouter) AddRouters() {
 			ar.addRouter(setting.NewAdminUserController(), adminUser)
 		}
 
-		adminSystem := adminSettingRouter.Group("/system")
-		{
-			ar.addRouter(setting.NewAdminSystemController(), adminSystem)
-		}
-
-	}
-
-	//Demo演示文件上传
-	adminDemoRouter := ar.root.Group("/demo")
-	adminDemoRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
-	{
-		ar.addRouter(demo.NewUploadController(), adminDemoRouter)
-	}
-
-	//Article文章管理
-	adminArticleRouter := ar.root.Group("/article")
-	adminArticleRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
-	{
-		ar.addRouter(article.NewArticleController(), adminArticleRouter)
-	}
-
-	//文件上传
-	adminUploadRouter := ar.root.Group("/upload")
-	adminUploadRouter.Use(middleware.AdminUserAuth())
-	{
-		ar.addRouter(upload.NewUploadController(), adminUploadRouter)
 	}
 
 }

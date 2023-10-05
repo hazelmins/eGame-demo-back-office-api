@@ -9,40 +9,35 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"strings"
 	"sync"
-	"time"
 
-	"eGame-demo-back-office-api/configs"
 	"eGame-demo-back-office-api/pkg/redisx"
-	"eGame-demo-back-office-api/pkg/utils/filesystem"
-	gstrings "eGame-demo-back-office-api/pkg/utils/strings"
 )
 
 /**
 * 创建目录
 **/
-func WriteLog() {
+// func WriteLog() {
 
-	var wg sync.WaitGroup
+// 	var wg sync.WaitGroup
 
-	date := time.Now().AddDate(0, 0, -1).Local().Format("20060102")
+// 	date := time.Now().AddDate(0, 0, -1).Local().Format("20060102")
 
-	pattern := "logs:" + date + ":*"
-	keys, _ := redisx.GetRedisClient().Keys(pattern).Result()
+// 	pattern := "logs:" + date + ":*"
+// 	keys, _ := redisx.GetRedisClient().Keys(pattern).Result()
 
-	for _, key := range keys {
-		path := strings.ReplaceAll(key, ":", "/")
+// 	for _, key := range keys {
+// 		path := strings.ReplaceAll(key, ":", "/")
 
-		file, err := filesystem.OpenFile(gstrings.JoinStr(configs.RootPath, "/", path, ".log"))
-		if err == nil {
-			wg.Add(1)
-			go writeFile(key, file, &wg)
-		}
-	}
+// 		file, err := filesystem.OpenFile(gstrings.JoinStr(configs.RootPath, "/", path, ".log"))
+// 		if err == nil {
+// 			wg.Add(1)
+// 			go writeFile(key, file, &wg)
+// 		}
+// 	}
 
-	wg.Wait()
-}
+// 	wg.Wait()
+// }
 
 /**
 * 内容写入到文件中

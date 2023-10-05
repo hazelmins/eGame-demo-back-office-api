@@ -44,33 +44,30 @@ func (con loginController) Routes(rg *gin.RouterGroup) {
 /*
 * 登录
  */
+
 func (con loginController) login(c *gin.Context) {
-	if c.Request.Method == "GET" {
-		con.Html(c, http.StatusOK, "home/login.html", gin.H{
-			"title": "Egame backoffice",
-		})
-	} else {
+	if c.Request.Method == "POST" {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
 
 		// 为测试方便release模式才开启验证码
 		if gin.Mode() == gin.ReleaseMode {
-
-			captch := c.PostForm("captcha")
+			captcha := c.PostForm("captcha")
 			var store = store.NewSessionStore(c, 20)
-			verify := store.Verify("", captch, true)
+			verify := store.Verify("", captcha, true)
 			if !verify {
 				con.Error(c, "验证码错误")
 				return
 			}
-
 		}
+
 		//setp 1 進db取玩家資料
 		adminUser, err := services.NewAdminUserService().GetAdminUser(map[string]interface{}{"username": username})
 		if err != nil {
-			con.Error(c, "無此管理員")
+			con.Error(c, "无此管理員")
 			return
 		}
+
 		// 打印 adminUser 的內容
 		//fmt.Printf("adminUser 的內容：%+v\n", adminUser)
 
@@ -79,7 +76,7 @@ func (con loginController) login(c *gin.Context) {
 
 		permissions, err := services.NewAdminGroupService().GetAdminGroup(groupName)
 		if err != nil {
-			con.Error(c, "無此管理組")
+			con.Error(c, "无此管理組")
 			return
 		}
 
@@ -119,7 +116,6 @@ func (con loginController) login(c *gin.Context) {
 			con.Error(c, "账号密码错误")
 		}
 	}
-
 }
 
 /**

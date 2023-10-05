@@ -1,7 +1,5 @@
 /*
- * @Description:
- * @Author: gphper
- * @Date: 2022-03-27 10:57:10
+ * @Description:文件配置包 不能刪啊
  */
 package filesystem
 
@@ -17,7 +15,8 @@ import (
 	"strings"
 )
 
-/**
+/*
+*
 获取项目根目录
 */
 func RootPath() (path string, err error) {
@@ -65,8 +64,8 @@ func getCurrentAbPathByCaller() string {
 }
 
 /**
-* 打开文件句柄
-**/
+ * 打开文件句柄
+ **/
 func OpenFile(filepath string) (file *os.File, err error) {
 
 	file, err = os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE, 0666)
@@ -92,7 +91,7 @@ func OpenFile(filepath string) (file *os.File, err error) {
 }
 
 /**
-* 过滤非法访问的路径
+ * 过滤非法访问的路径
  */
 func FilterPath(root, path string) (string, error) {
 

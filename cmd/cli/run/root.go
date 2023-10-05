@@ -12,7 +12,7 @@ import (
 	"eGame-demo-back-office-api/internal/router"
 	"eGame-demo-back-office-api/pkg/mysqlx"
 	"eGame-demo-back-office-api/pkg/redisx"
-	"eGame-demo-back-office-api/web"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 )
@@ -54,11 +54,6 @@ func runFunction(cmd *cobra.Command, args []string) {
 	err = configs.Init(configPath)
 	if err != nil {
 		log.Fatalf("start fail:[Config Init] %s", err.Error())
-	}
-
-	err = web.Init()
-	if err != nil {
-		log.Fatalf("start fail:[Web Init] %s", err.Error())
 	}
 
 	err = redisx.Init()

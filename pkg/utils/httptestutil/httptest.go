@@ -1,7 +1,5 @@
 /*
- * @Description:
- * @Author: gphper
- * @Date: 2022-03-31 20:43:41
+ * @Description:http 請求方式
  */
 package httptestutil
 

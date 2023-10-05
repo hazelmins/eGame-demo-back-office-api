@@ -25,7 +25,7 @@ var (
 
 func NewUserDao() *UserDao {
 	onceUserDao.Do(func() {
-		instanceUser = &UserDao{DB: mysqlx.GetDB(&models.Article{})}
+		instanceUser = &UserDao{DB: mysqlx.GetDB(&models.User{})}
 	})
 	return instanceUser
 }

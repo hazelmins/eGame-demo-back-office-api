@@ -7,6 +7,6 @@ package models
 
 func GetModels() []interface{} {
 	return []interface{}{
-		&AdminUsers{}, &Article{}, &UploadType{}, &User{}, &SuperAdmin{},
+		&AdminUsers{}, &UploadType{}, &User{}, &SuperAdmin{},
 	}
 }

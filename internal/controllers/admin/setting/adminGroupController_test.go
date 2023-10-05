@@ -13,7 +13,6 @@ import (
 	"eGame-demo-back-office-api/pkg/redisx"
 	"eGame-demo-back-office-api/pkg/utils/httptestutil"
 	"eGame-demo-back-office-api/pkg/utils/httptestutil/router"
-	"eGame-demo-back-office-api/web"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -105,11 +104,6 @@ func TestExampleTestSuite(t *testing.T) {
 	err = configs.Init("")
 	if err != nil {
 		log.Fatalf("start fail:[Config Init] %s", err.Error())
-	}
-
-	err = web.Init()
-	if err != nil {
-		log.Fatalf("start fail:[Web Init] %s", err.Error())
 	}
 
 	err = redisx.Init()

@@ -13,11 +13,11 @@ import (
 	"os"
 
 	"eGame-demo-back-office-api/internal"
+
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/gphper/multitemplate"
 )
 
 type Router struct {
@@ -30,23 +30,14 @@ func NewRouter(r *gin.Engine) Router {
 	}
 }
 
+// 中間件
 func (route Router) SetGlobalMiddleware(middlewares ...gin.HandlerFunc) {
 	route.r.Use(middlewares...)
-}
-
-// 设置自定义模板加载
-func (route Router) SetHtmlRenderer(render multitemplate.Renderer) {
-	route.r.HTMLRender = render
 }
 
 // 设置swagger访问
 func (route Router) SetSwaagerHandle(path string, handle gin.HandlerFunc) {
 	route.r.GET(path, handle)
-}
-
-// 设置静态路径
-func (route Router) SetStaticFile(path string, fs http.FileSystem) {
-	route.r.StaticFS(path, fs)
 }
 
 // 设置附件保存地址
