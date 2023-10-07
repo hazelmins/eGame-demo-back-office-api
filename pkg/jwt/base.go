@@ -1,7 +1,5 @@
 /*
- * @Description:
- * @Author: gphper
- * @Date: 2021-12-22 14:43:08
+ * @Description:簽名驗證包
  */
 package jwt
 

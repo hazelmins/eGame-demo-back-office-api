@@ -15,6 +15,7 @@ import (
 	services "eGame-demo-back-office-api/internal/services/admin"
 	"eGame-demo-back-office-api/pkg/casbinauth"
 	"eGame-demo-back-office-api/pkg/paginater"
+	"eGame-demo-back-office-api/pkg/redisx"
 
 	"github.com/gin-gonic/gin"
 )
@@ -192,16 +193,29 @@ func (con adminGroupController) onlydbindex(c *gin.Context) {
 		adminGroupPrivs []SuperAdmin
 	)
 
-	// 从 Gin 上下文中获取请求上下文。
+	// 1. 從Authorization標頭中獲取令牌
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		// 處理缺少令牌的情況
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "缺少令牌"})
+		return
+	}
+
+	// 2. 使用令牌從Redis檢索用戶數據
+	userData, err := redisx.GetUserDataFromRedis(token)
+	if err != nil {
+		// 處理從Redis檢索用戶數據時出現錯誤的情況
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "無法檢索用戶數據"})
+		return
+	}
+
 	ctx, _ := c.Get("ctx")
 
-	// 调用 services.NewAdminGroupService() 创建 adminGroupService 的实例，然后调用其 Dao 属性上的 GetGroupIndex 方法。
 	adminGropDb := services.NewAdminGroupService().Dao.GetGroupIndex(ctx.(context.Context))
 
-	// 使用 paginater.PageOperation 方法进行分页处理，将分页结果存储到 adminUserData 和 adminUserList 变量中。
 	_, err = paginater.PageOperation(c, adminGropDb, 1, &adminGroupPrivs)
 	if err != nil {
-		// 如果分页处理出现错误，将错误信息返回给客户端并退出函数。
+
 		con.ErrorHtml(c, err)
 		return
 	}

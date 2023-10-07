@@ -1,7 +1,5 @@
 /*
- * @Description:
- * @Author: gphper
- * @Date: 2021-08-22 12:22:29
+ * @Description:存在redis log
  */
 package facade
 
