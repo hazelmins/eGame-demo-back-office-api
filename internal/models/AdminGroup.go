@@ -48,13 +48,11 @@ type SuperAdminSaveReq struct {
 // 建立種子admin權限內容
 func (au *SuperAdmin) FillData(db *gorm.DB) {
 	permissionsJSON := `{"permissions": {
-		"/admin/setting/adminuser/index:get": true,
-		"/admin/setting/adminuser/add:get": true,
-		"/admin/setting/adminuser/edit:get": true
+		"/admin/setting/adminuser/index:get": true
 	}}`
 
 	superAdmin := SuperAdmin{
-		GroupName:       "superadmin", // 添加用户组名称
+		GroupName:       "normal admin", // 添加用户组名称
 		PermissionsJSON: permissionsJSON,
 	}
 

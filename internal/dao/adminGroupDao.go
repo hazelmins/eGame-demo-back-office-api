@@ -53,17 +53,13 @@ func (dao *AdminGroupDao) GetAdminGroup(ctx context.Context, groupName string, u
 }
 
 /*
-*單純進db撈群組資料返回沒有任何條件設定
+*單純進db撈群組資料super_admin返回沒有任何條件設定
  */
-func (dao *AdminGroupDao) GetGroupIndex(ctx context.Context) *gorm.DB {
+func (dao *AdminGroupDao) GetGroupDBIndex(ctx context.Context) *gorm.DB {
 	// 创建一个初始的数据库查询对象
-	db := dao.DB.WithContext(ctx).Table("super_admin")
+	db := dao.DB.Table("super_admin")
 
 	// 执行查询
-	var results []map[string]interface{}
-	db = db.Select("group_name, permissions_json").Find(&results)
-
-	// 返回查询结果
 	return db
 }
 

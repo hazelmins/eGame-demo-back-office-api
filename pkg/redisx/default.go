@@ -41,7 +41,7 @@ func GetRedisClient() *redis.Client {
 	return redisClient
 }
 
-type UserData struct {
+type UserData struct { // redis中的資料結構
 	Groupname   string          `json:"groupname"`
 	Permissions map[string]bool `json:"permissions"`
 	Token       string          `json:"token"`

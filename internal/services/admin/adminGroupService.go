@@ -4,6 +4,7 @@
 package admin
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"sync"
@@ -48,6 +49,7 @@ type Permissions struct {
 	Permissions map[string]bool `json:"permissions"`
 }
 
+// *********************撈取群組權限per groupName********************************************************
 func (ser *adminGroupService) GetAdminGroup(groupName string) (map[string]bool, error) {
 	adminGroup, err := ser.Dao.GetPermissionsByGroupName(groupName)
 	if err != nil {
@@ -68,7 +70,21 @@ func (ser *adminGroupService) GetAdminGroup(groupName string) (map[string]bool, 
 	return permissions.Permissions, nil
 }
 
-// 保存角色
+// *******************************撈取全部群組以及權限***********************************
+func (ser *adminGroupService) GetGroupIndex() ([]map[string]interface{}, error) {
+	// 获取查询结果
+	db := ser.Dao.GetGroupDBIndex(context.TODO()) // 使用context.TODO代替nil
+
+	var results []map[string]interface{}
+	if err := db.Select("group_name, permissions_json").Find(&results).Error; err != nil {
+		fmt.Printf("GORM 查詢錯誤：%v\n", err)
+		return nil, err
+	}
+
+	return results, nil
+}
+
+// ************************************ 保存角色
 func (ser *adminGroupService) SaveGroup(req models.AdminGroupSaveReq) error {
 	// 從 casbinauth 模組中獲取特定群組的舊角色信息。
 	oldGroup := casbinauth.GetPoliceByGroup(req.GroupName)

@@ -180,7 +180,7 @@ func (con adminGroupController) dbindex(c *gin.Context) {
 }
 
 /*
-*從db撈所有群組跟權限
+*從db撈所有群組跟權限********************************看看我這裡************************************************
  */
 type SuperAdmin struct {
 	GroupName       string          `json:"group_name"`
@@ -189,8 +189,7 @@ type SuperAdmin struct {
 
 func (con adminGroupController) onlydbindex(c *gin.Context) {
 	var (
-		err             error
-		adminGroupPrivs []SuperAdmin
+		err error
 	)
 
 	// 1. 從Authorization標頭中獲取令牌
@@ -200,27 +199,46 @@ func (con adminGroupController) onlydbindex(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "缺少令牌"})
 		return
 	}
-
+	var userData redisx.UserData
 	// 2. 使用令牌從Redis檢索用戶數據
-	userData, err := redisx.GetUserDataFromRedis(token)
+	userData, err = redisx.GetUserDataFromRedis(token)
 	if err != nil {
 		// 處理從Redis檢索用戶數據時出現錯誤的情況
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "無法檢索用戶數據"})
 		return
 	}
 
-	ctx, _ := c.Get("ctx")
+	// 检查userData中的groupname是否为"superadmin"
+	if userData.Groupname == "superadmin" {
+		// 查询数据库以获取组名和权限内容
+		adminGroupDb, err := services.NewAdminGroupService().GetGroupIndex()
+		if err != nil {
+			con.Error(c, "非最高管理superadmin")
+			return
+		}
 
-	adminGropDb := services.NewAdminGroupService().Dao.GetGroupIndex(ctx.(context.Context))
+		// 构建所需的格式
+		groupPermissions := make(map[string]interface{})
+		for _, group := range adminGroupDb {
+			groupName, ok := group["group_name"].(string)
+			if !ok {
+				// 处理无效的组名
+				continue
+			}
+			permissions, ok := group["permissions_json"].(bool)
+			if !ok {
+				// 处理无效的权限内容
+				continue
+			}
+			groupPermissions[groupName] = permissions
+		}
 
-	_, err = paginater.PageOperation(c, adminGropDb, 1, &adminGroupPrivs)
-	if err != nil {
-
-		con.ErrorHtml(c, err)
-		return
+		// 返回结果给客户端
+		c.JSON(http.StatusOK, gin.H{
+			"groupname":   userData.Groupname,
+			"permissions": groupPermissions,
+		})
 	}
-
-	con.Index(c, adminGroupPrivs)
 }
 
 // ****************需要大改的地方 修改指定admin權限******************************
