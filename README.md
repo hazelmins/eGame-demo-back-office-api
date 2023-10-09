@@ -6,6 +6,10 @@
 ```yaml
 docker-compose -f deployments/docker-compose.yml up
 
+# -d 背景中執行
+docker-compose -f deployments/docker-compose.yml up -d
+
+
 範例：
 ~/Documents/GitHub/Mindy/eGame-demo-back-office-api~% docker-compose -f deployments/docker-compose.yml up
 ```
