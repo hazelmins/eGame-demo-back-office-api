@@ -1,7 +1,5 @@
 /*
- * @Description:
- * @Author: gphper
- * @Date: 2021-12-22 13:55:23
+ * @Description:jwt簽名測試頁面
  */
 package jwt
 
@@ -15,7 +13,7 @@ func TestGenerate(t *testing.T) {
 
 	var payload Payload
 
-	payload.Name = "gphper"
+	payload.Name = "mindy"
 	payload.Uid = 1
 	payload.Exp = time.Now().Local().Add(5 * time.Minute)
 

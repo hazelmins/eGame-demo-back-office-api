@@ -1,103 +1,5 @@
-# 最新文档查看
-> https://gphper.github.io/ginadmindoc/#/
 
-# GinAdmin
-
-这个项目是以Gin框架为基础搭建的后台管理平台，虽然很多人都认为go是用来开发高性能服务端项目的，但是也难免有要做web管理端的需求，总不能再使用别的语言来开发吧。所以整合出了GinAdmin项目，请大家多提意见指正！欢迎 star ⭐⭐
-
-![login](https://user-images.githubusercontent.com/18718299/200120227-e7258587-7344-42e1-891d-5e42b0095020.jpg)
-![index](https://user-images.githubusercontent.com/18718299/200120226-afaaf7b2-bea2-4e67-9b6b-09e077fd53a2.jpg)
-
-
-## 依赖
-
-* golang > 1.8
-* Gin
-* BootStrap
-* LayUi
-* WebUpload
-* [Light Year Admin Using Iframe](#https://gitee.com/yinqi/Light-Year-Admin-Using-Iframe)
-
-## 功能清单
-
-:white_check_mark:权限控制
-
-:white_check_mark:日志管理
-
-:white_check_mark:模板页面
-
-:white_check_mark:自动分页
-
-:white_check_mark:Docker部署
-
-:white_check_mark:静态资源打包
-
-:white_check_mark:性能监控
-
-:white_check_mark:API JWT
-
-:white_check_mark:redis日志落盘保存
-
-:white_check_mark:HTTP测试
-
-:black_square_button:登录日志
-
-:black_square_button:csrf 防御
-
-:black_square_button:命令行操作
-
-
-## 使用文档
-
-- [演示地址](#演示地址)
-
-- [开始使用](#开始使用)
-
-- [构建环境](#docker-compose)
-
-- [项目目录](#结构)
-
-- [分页](#分页)
-
-- [日志](#日志)
-
-- [数据库](#数据库)
-
-- [定时任务](#定时任务)
-
-- [配置文件](#配置文件)
-
-- [模板页面](#模板页面)
-
-- [用户权限](#用户权限)
-
-- [API文档](#API文档)
-
-- [线上部署](#线上部署)
-
-- [性能监控](#性能监控)
-
-- [命令行操作](#命令行操作)
-
-### :small_blue_diamond:<a name="演示地址">演示地址</a>
-
-* http://122.152.196.83/admin/login  账号：admin 密码： 111111
-
-### :small_blue_diamond:<a name="开始使用">开始使用</a>
-
-1. git 克隆地址 
-   
-   ```
-   git clone https://eGame-demo-back-office-api.git
-   ```
-
-2. 下载依赖包
-   
-   ```go
-   go mod download
-   ```
-
-3. 配置 `configs/config.yaml`文件
+1.配置 `configs/config.yaml`文件
    
    ```yaml
    mysql:
@@ -121,27 +23,8 @@
       log_media: "redis"
    ```
 
-4. 运行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
+2. 運行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
 
-5. vscode调试配置文件 `launch.json`
-
-```json
-{
-    "version": "0.2.0",
-    "configurations": 
-        {
-            "name": "ginadmin",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceRoot}/cmd/ginadmin",
-            "trace": true,
-            "args":[
-                "--root_path=${workspaceRoot}"
-            ],
-        }
-}
-```
 
 ### :small_blue_diamond:<a name="docker-compose">构建开发环境</a>
 
@@ -177,50 +60,17 @@
 
 5. 运行项目 ` go run ./cmd/ginadmin/ run`  访问地址 `http://localhost:20010/admin/login`
 
-6. 桌面连接redis地址
-   
-   ```
-   地址：127.0.0.1
-   端口：6380
-   密码：ginadmin
-   ```
 
-7. 桌面连接mysql地址
-   
-   ```
-   地址：localhost
-   端口：3310
-   用户名：docker
-   密码：123456
-   ```
-
-### :small_blue_diamond:<a name="结构">项目目录</a>
-
-```
-|--api  // Api接口控制器
-|--build // 封装的公共方法
-|--cmd  // 命令行工具
-|--configs // 配置文件
-|--deployments // docker-compose 部署文件
-|--internal //核心代码
-|--logs // 日志存放目录
-|--pkg // 公共调用部分
-|--web //视图静态文件
-```
 
 ### :small_blue_diamond:<a name="分页">分页</a>
 
-1. 使用 `pkg/paginater/paginater.go` 里面的 `PageOperation` 进行分页
+ 使用 `pkg/paginater/paginater.go` 里面的 `PageOperation` 进行分页
    
    ```go
    adminDb := models.Db.Table("admin_users").Select("nickname","username").Where("uid != ?", 1)
    adminUserData := paginater.PageOperation(c, adminDb, 1, &adminUserList)
    ```
-2. 在html中使用
-   
-   ```go
-   {{ .adminUserData.PageHtml }}
-   ```
+
 
 ### :small_blue_diamond:<a name="日志">日志</a>
 
@@ -287,10 +137,6 @@
    configs.App.BaseConf.Port
    ```
 
-### :small_blue_diamond:<a name="模板页面">模板页面</a>
-
-- 所有的后台模板都写到 `web/views/template` 目录下面，并且分目录存储，调用时按照 `目录/模板名称` 的方式调用
-
 ### :small_blue_diamond:<a name="用户权限">用户权限</a>
 
 - 菜单权限定义到 `internal/menu/menu.go` 文件下，定义完之后在用户组管理里面编辑权限
@@ -319,26 +165,10 @@
           return true
   },
   ```
-
-### :small_blue_diamond:<a name="API文档">API文档</a>
-
-- 使用 swagg 生成api文档，生成文件再docs目录下
-  
-  ```
-  go install github.com/swaggo/swag/cmd/swag
-  swag init -g cmd/ginadmin/main.go
-  ```
-
-- 在根目录执行  `go run .\cmd\ginadmin\ run` 然后啊访问 http://localhost:20010/swagger/index.html
-
 ### :small_blue_diamond:<a name="线上部署">线上部署</a>
 
 - 使用 `go build .\cmd\ginadmin`  生成二进制文件
 - 打包静态资源部署 `go build -tags=embed .\cmd\ginadmin` 
-
-### :small_blue_diamond:<a name="性能监控">性能监控</a>
-
-* 推荐使用 prometheus + grafana 进行性能监控，参考示例  https://github.com/gphper/ginmonitor
 
 ### :small_blue_diamond:<a name="命令行操作">命令行操作</a>
 

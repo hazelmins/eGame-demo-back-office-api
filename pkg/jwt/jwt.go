@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// 自定密鑰
 var secret string = "12345678"
 
 func Generate(alg string, payload Payload) (string, error) {
