@@ -137,34 +137,6 @@
    configs.App.BaseConf.Port
    ```
 
-### :small_blue_diamond:<a name="用户权限">用户权限</a>
-
-- 菜单权限定义到 `internal/menu/menu.go` 文件下，定义完之后在用户组管理里面编辑权限
-
-- casbin版集成了casbin权限管理框架，官方地址：[casbin](#https://casbin.org/docs/zh-CN/get-started)
-
-- 框架中的常用方法定义在  `pkg/casbinauth/casbin.go` 文件中
-
-- 在控制器中可用从 `gin.context` 获取登录用户信息
-  
-  ```go
-  info,_ := c.Get("userInfo")
-  ```
-
-- template 中判断权限的函数 `judgeContainPriv` 定义在 `pkg/template/default.go` 文件下
-  
-  ```go
-  "judgeContainPriv": func(username string, obj string, act string) bool {
-          if username == "admin" {
-              return true
-          }
-          ok, err := casbinauth.Check(username, obj, act)
-          if !ok || err != nil {
-              return false
-          }
-          return true
-  },
-  ```
 ### :small_blue_diamond:<a name="线上部署">线上部署</a>
 
 - 使用 `go build .\cmd\ginadmin`  生成二进制文件
