@@ -3,12 +3,12 @@ mysql:
       username: "egame"
       password: "mindy123"
       database: "egame"
-      host: "127.0.0.1"
-      port: 3310
+      host: "egame-mysql"
+      port: 3306
       max_open_conn: 50
       max_idle_conn: 20
 redis:
-      addr: "localhost:6380"
+      addr: "egame-redis:6379"
       db: 0
       password: ""
 session:

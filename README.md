@@ -1,4 +1,23 @@
 
+
+
+
+啟動Docker-compose
+```yaml
+docker-compose -f deployments/docker-compose.yml up
+
+範例：
+~/Documents/GitHub/Mindy/eGame-demo-back-office-api~% docker-compose -f deployments/docker-compose.yml up
+```
+
+測試API
+```sh
+curl -X POST 0.0.0.0:8091/admin/login
+
+{"msg":"无此管理員","status":false}
+```
+
+
 1.配置 `configs/config.yaml`文件
    
    ```yaml 本地

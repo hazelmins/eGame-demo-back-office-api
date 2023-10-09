@@ -1,19 +1,30 @@
-version: '3'
+version: '3.9'
+
+
+networks:                             # 網路配置
+  Net_192.168.255.0_24:               # 網路物件
+    ipam:                             # IP address 縮寫
+      config:                         # 設定
+      - subnet: "192.168.255.0/24"    # 網段
+
 services:
-  redis:
-      container_name: egame-redis
-      image: egame-redis
-      build:
-        context: ..
-        dockerfile: build/DockerfileRedis
-      volumes:
-        - .\conf\redis\redis.conf:/usr/local/etc/redis/redis.conf
-      ports:
-        - "6380:6379"
-      command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-      restart: on-failure:5
-  mysql:
-    container_name: egame-mysql
+  eGame-Redis:
+    container_name: eGame-redis
+    image: egame-redis
+    build:
+      context: ..
+      dockerfile: build/DockerfileRedis
+    volumes:
+      - .\conf\redis\redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6380:6379"
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    restart: on-failure:5
+    networks:                         # 網路設定
+        - Net_192.168.255.0_24        # 使用的網段
+
+  eGame-mysql:
+    container_name: eGame-mysql
     image: mysql:5.7
     environment:
       # MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # 允许空密码
@@ -25,6 +36,38 @@ services:
       - "3310:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 20s
+        retries: 10
+    networks:                         # 網路設定
+        - Net_192.168.255.0_24        # 使用的網段
+
+  eGame-be:
+    container_name: eGame-be
+    image: egame-be
+    build:
+      context: ..
+      dockerfile: build/DockerfileBackend
+    ports:
+      - "8091:8091"
+    depends_on:
+      eGame-mysql:
+        condition: service_healthy
+    networks:                         # 網路設定
+        - Net_192.168.255.0_24        # 使用的網段
+
+  DB-Admin:
+    container_name: DB-MGMT-01
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:                         # 網路設定
+        - Net_192.168.255.0_24        # 使用的網段
 
 volumes:
   mysql-data:

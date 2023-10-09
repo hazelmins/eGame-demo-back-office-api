@@ -1,0 +1,39 @@
+# 第一階段：編譯 Go 程式
+FROM golang:1.21-alpine AS builder
+
+# 設定工作目錄
+WORKDIR /app
+
+# # 複製 Go 模組文件
+COPY go.mod .
+COPY go.sum .
+
+# # 下載 Go 模組依賴項
+RUN go mod download
+
+# 複製整個 Go 程式碼到容器中
+COPY . .
+
+# 編譯 Go 程式
+RUN go build -o main cmd/ginadmin/main.go
+
+# 第二階段：最終映像
+FROM alpine:3.18
+
+# 設定工作目錄
+WORKDIR /app
+
+# 複製從第一階段編譯好的二進位文件
+COPY --from=builder /app/. .
+
+# 安裝 tzdata 套件以便設定時區
+RUN apk add --no-cache tzdata
+
+# 設定時區為 UTC+8（Asia/Taipei）
+RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo "Asia/Shanghai" > /etc/timezone
+
+EXPOSE 8091
+
+# 定義容器啟動時運行的命令
+CMD ["./main", "run"]
