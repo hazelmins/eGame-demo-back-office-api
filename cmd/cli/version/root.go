@@ -3,7 +3,6 @@ package version
 import (
 	"fmt"
 
-	_ "eGame-demo-back-office-api/docs"
 	"github.com/spf13/cobra"
 )
 

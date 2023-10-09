@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"eGame-demo-back-office-api/configs"
-	_ "eGame-demo-back-office-api/docs"
 	"eGame-demo-back-office-api/internal"
 	"eGame-demo-back-office-api/internal/cron"
 	"eGame-demo-back-office-api/internal/router"

@@ -1,5 +1,5 @@
 FROM golang
-MAINTAINER gphper
+MAINTAINER mindy
 WORKDIR /home/egame/
 RUN go env -w GO111MODULE=on && \
     go env -w GOPROXY=https://goproxy.cn,direct

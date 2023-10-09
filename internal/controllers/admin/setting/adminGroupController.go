@@ -6,6 +6,7 @@ package setting
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -192,52 +193,64 @@ func (con adminGroupController) onlydbindex(c *gin.Context) {
 		err error
 	)
 
-	// 1. 從Authorization標頭中獲取令牌
-	token := c.GetHeader("Authorization")
-	if token == "" {
-		// 處理缺少令牌的情況
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "缺少令牌"})
-		return
-	}
-	var userData redisx.UserData
-	// 2. 使用令牌從Redis檢索用戶數據
-	userData, err = redisx.GetUserDataFromRedis(token)
-	if err != nil {
-		// 處理從Redis檢索用戶數據時出現錯誤的情況
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "無法檢索用戶數據"})
-		return
-	}
-
-	// 检查userData中的groupname是否为"superadmin"
-	if userData.Groupname == "superadmin" {
-		// 查询数据库以获取组名和权限内容
-		adminGroupDb, err := services.NewAdminGroupService().GetGroupIndex()
-		if err != nil {
-			con.Error(c, "非最高管理superadmin")
+	// 1. 从Authorization标头中获取令牌
+	if c.Request.Method == "POST" {
+		token := c.GetHeader("token")
+		if token == "" {
+			// 处理缺少令牌的情况
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "缺少令牌"})
 			return
 		}
 
-		// 构建所需的格式
-		groupPermissions := make(map[string]interface{})
-		for _, group := range adminGroupDb {
-			groupName, ok := group["group_name"].(string)
-			if !ok {
-				// 处理无效的组名
-				continue
-			}
-			permissions, ok := group["permissions_json"].(bool)
-			if !ok {
-				// 处理无效的权限内容
-				continue
-			}
-			groupPermissions[groupName] = permissions
+		var userData redisx.UserData
+		// 2. 使用令牌从Redis检索用户数据
+		userData, err = redisx.GetUserDataFromRedis(token)
+		if err != nil {
+			// 处理从Redis检索用户数据时出现错误的情况
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "无法检索用户数据"})
+			return
 		}
 
-		// 返回结果给客户端
-		c.JSON(http.StatusOK, gin.H{
-			"groupname":   userData.Groupname,
-			"permissions": groupPermissions,
-		})
+		// 检查userData中的groupname是否为"superadmin"
+		if userData.Groupname == "superadmin" {
+			// 查询数据库以获取组名和权限内容
+			adminGroupDb, err := services.NewAdminGroupService().GetGroupIndex()
+			if err != nil {
+				con.Error(c, "非最高管理superadmin")
+				return
+			}
+
+			// 构建所需的格式
+			groupPermissions := make(map[string]interface{})
+			for _, group := range adminGroupDb {
+				groupName, ok := group["group_name"].(string)
+				if !ok {
+					// 处理无效的组名
+					continue
+				}
+				permissionsStr, ok := group["permissions_json"].(string)
+				if !ok {
+					// 处理无效的权限内容
+					continue
+				}
+
+				// 解析权限JSON字符串为map
+				var permissions map[string]interface{}
+				err := json.Unmarshal([]byte(permissionsStr), &permissions)
+				if err != nil {
+					// 处理解析错误
+					continue
+				}
+
+				groupPermissions[groupName] = permissions
+			}
+
+			// 返回结果给客户端
+			c.JSON(http.StatusOK, gin.H{
+				"groupname":   userData.Groupname,
+				"permissions": groupPermissions,
+			})
+		}
 	}
 }
 

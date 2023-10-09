@@ -1,7 +1,7 @@
 
 1.配置 `configs/config.yaml`文件
    
-   ```yaml
+   ```yaml 本地
    mysql:
    -  name: "default"
       username: "root"
@@ -41,13 +41,13 @@
       max_open_conn: 50
       max_idle_conn: 20
    redis:
-      addr: "localredis:6379"
+    -  addr: "localredis:6379"
       db: 0
       password: "ginadmin"
    session:
-      session_name: "gosession_id"
+    -  session_name: "gosession_id"
    base:
-      host: 0.0.0.0
+    -  host: 0.0.0.0
       port: 20010
       log_media: "redis"
    ```
