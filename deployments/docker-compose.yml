@@ -1,11 +1,14 @@
 version: '3.9'
 
+name: egame
+
 
 networks:                             # 網路配置
   Net_192.168.255.0_24:               # 網路物件
     ipam:                             # IP address 縮寫
       config:                         # 設定
       - subnet: "192.168.255.0/24"    # 網段
+
 
 services:
   eGame-Redis:
