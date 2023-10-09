@@ -50,6 +50,7 @@ services:
   eGame-be:
     container_name: eGame-be
     image: egame-be
+    restart: always
     build:
       context: ..
       dockerfile: build/DockerfileBackend
