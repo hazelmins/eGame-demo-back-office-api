@@ -3,7 +3,7 @@
 
 
 啟動Docker-compose
-```yaml
+```sh
 docker-compose -f deployments/docker-compose.yml up
 
 # -d 背景中執行
