@@ -1,19 +1,19 @@
 mysql:
    -  name: "default"
-      username: "docker"
-      password: "123456"
-      database: "docker_mysql"
-      host: "localmysql"
-      port: 3306
+      username: "egame"
+      password: "mindy123"
+      database: "egame"
+      host: "127.0.0.1"
+      port: 3310
       max_open_conn: 50
       max_idle_conn: 20
 redis:
-      addr: "localredis:6379"
+      addr: "localhost:6380"
       db: 0
-      password: "ginadmin"
+      password: ""
 session:
       session_name: "gosession_id"
 base:
       host: 0.0.0.0
-      port: 20010
+      port: 8091
       log_media: "redis"

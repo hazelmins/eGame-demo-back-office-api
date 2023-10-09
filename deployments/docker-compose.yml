@@ -14,28 +14,35 @@ services:
       restart: on-failure:5
   mysql:
     container_name: egame-mysql
-    image: egame-mysql
-    build:
-      context: ..
-      dockerfile: build/DockerfileMysql
-    volumes:
-       - .\mysqldata:/var/lib/mysql
-       - .\conf\mysql\my.cnf:/etc/mysql/my.cnf
+    image: mysql:5.7
+    environment:
+      # MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # 允许空密码
+      MYSQL_ROOT_PASSWORD: mindy123
+      MYSQL_DATABASE: egame
+      MYSQL_USER: egame
+      MYSQL_PASSWORD: mindy123
     ports:
-        - "3310:3306"
-  web:
-    container_name: egame-web
-    image: egame-web
-    build:
-      context: ..
-      dockerfile: build/DockerfileWeb
+      - "3310:3306"
     volumes:
-       - ..\:/home/egame
-    ports:
-      - 20010:20010
-    depends_on:
-      - mysql
-      - redis
-    links:
-      - mysql:localmysql
-      - redis:localredis
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
+
+
+  # web:
+  #   container_name: egame-web
+  #   image: egame-web
+  #   build:
+  #     context: ..
+  #     dockerfile: build/DockerfileWeb
+  #   volumes:
+  #      - ..\:/home/egame
+  #   ports:
+  #     - 20010:20010
+  #   depends_on:
+  #     - mysql
+  #     - redis
+  #   links:
+  #     - mysql:localmysql
+  #     - redis:localredis
