@@ -77,19 +77,3 @@ volumes:
   mysql-data:
 
 
-  # web:
-  #   container_name: egame-web
-  #   image: egame-web
-  #   build:
-  #     context: ..
-  #     dockerfile: build/DockerfileWeb
-  #   volumes:
-  #      - ..\:/home/egame
-  #   ports:
-  #     - 20010:20010
-  #   depends_on:
-  #     - mysql
-  #     - redis
-  #   links:
-  #     - mysql:localmysql
-  #     - redis:localredis

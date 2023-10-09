@@ -1,6 +1,6 @@
 
 
-
+### :small_blue_diamond:<a name="docker-compose">建構指令列</a>
 
 啟動Docker-compose
 ```sh
@@ -49,7 +49,7 @@ curl -X POST 0.0.0.0:8091/admin/login
 2. 運行 `go run .\cmd\ginadmin`访问地址 http://localhost:端口地址/admin/login。默认账户：admin  密码：111111
 
 
-### :small_blue_diamond:<a name="docker-compose">构建开发环境</a>
+### :small_blue_diamond:<a name="docker-compose">替換config內容</a>
 
 1. 替换conf目录下的配置项
    
@@ -81,7 +81,7 @@ curl -X POST 0.0.0.0:8091/admin/login
 
 4. 下载扩展 `go mod tidy`
 
-5. 运行项目 ` go run ./cmd/ginadmin/ run`  访问地址 `http://localhost:20010/admin/login`
+5. 运行项目 ` go run ./cmd/ginadmin/ run`  访问地址 `http://localhost:8091/admin/login`
 
 
 
@@ -159,51 +159,3 @@ curl -X POST 0.0.0.0:8091/admin/login
    ```go
    configs.App.BaseConf.Port
    ```
-
-### :small_blue_diamond:<a name="线上部署">线上部署</a>
-
-- 使用 `go build .\cmd\ginadmin`  生成二进制文件
-- 打包静态资源部署 `go build -tags=embed .\cmd\ginadmin` 
-
-### :small_blue_diamond:<a name="命令行操作">命令行操作</a>
-
-*  运行程序命令
-```
-PS F:\ginadmin> go run .\cmd\ginadmin\ run -h
-Run app
-
-Usage:
-  ginadmin run [flags]
-
-Flags:
-  -c, --config path string   config path
-  -h, --help                 help for run
-  -m, --mode string          dev or release (default "dev")
-```
-* 数据表迁移命令
-```
-PS F:\ginadmin> go run .\cmd\ginadmin\ db migrate -h
-DB Migrate
-
-Usage:
-  ginadmin db migrate [-t table] [flags]
-
-Flags:
-  -c, --config path string   config path
-  -h, --help                 help for migrate
-  -t, --table string         input a table name
-```
-
-*  数据填充命令
-```
-PS F:\ginadmin> go run .\cmd\ginadmin\ db seed -h   
-DB Seed
-
-Usage:
-  ginadmin db seed [-t table] [flags]
-
-Flags:
-  -c, --config path string   config path
-  -h, --help                 help for seed
-  -t, --table string         input a table name
-```
