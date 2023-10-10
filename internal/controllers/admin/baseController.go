@@ -34,14 +34,11 @@ func (Base BaseController) Success(c *gin.Context, url string, message string) {
 	})
 }
 
-func (Base BaseController) Success2(c *gin.Context, message string, permissions map[string]bool, username string, groupname string, token string, changepassword bool) {
+func (Base BaseController) Success2(c *gin.Context, permissions map[string]bool, uid int, token string, changepassword bool) {
 	responseData := gin.H{
-		"status":         true,
-		"msg":            message,
-		"permissions":    permissions,
-		"username":       username,  // 将 username 添加到 responseData 中
-		"groupname":      groupname, // 将 groupname 添加到 responseData 中
-		"token":          token,     // 将 token 添加到 responseData 中
+		"Permission":     permissions,
+		"Role":           uid,   // 将 groupname 添加到 responseData 中
+		"SessionKey":     token, // 将 token 添加到 responseData 中
 		"changepassword": changepassword,
 	}
 
@@ -56,6 +53,16 @@ type SuperAdmin struct {
 func (con BaseController) Index(c *gin.Context, data interface{}) {
 	// 使用 JSON 格式返回成功响应
 	c.JSON(http.StatusOK, data)
+}
+func (Base BaseController) Success3(c *gin.Context, groupPermissions map[string]map[string]bool, uid int, rolename string, userpermissions map[string]bool) {
+	responseData := gin.H{
+		"Rolename":    rolename,
+		"permissions": groupPermissions,
+		"Role":        uid,
+		"Permissions": userpermissions,
+	}
+
+	c.JSON(http.StatusOK, responseData)
 }
 
 func (Base BaseController) Error(c *gin.Context, message string) {

@@ -37,9 +37,10 @@ func (con adminGroupController) Routes(rg *gin.RouterGroup) {
 	rg.GET("/edit", con.edit)
 	rg.GET("/del", con.del)
 	//***** 進DB的接口 ******
-	rg.POST("/dbindex", con.dbindex)       //單一管理員權限列表
-	rg.POST("/dbsave", con.dbsave)         //修改權限
-	rg.POST("/onlyindex", con.onlydbindex) //暴力列全部權限 ok
+	rg.POST("/dbindex", con.dbindex)      //單一管理員權限列表
+	rg.POST("/dbsave", con.dbsave)        //修改權限
+	rg.POST("/rolelist", con.onlydbindex) //暴力列全部權限 ok
+	rg.POST("/roleadd", con.dbaddIndex)   //新增群組權限
 
 }
 
@@ -213,7 +214,7 @@ func (con adminGroupController) onlydbindex(c *gin.Context) {
 
 		// 检查userData中的groupname是否为"superadmin"
 		if userData.Groupname == "superadmin" {
-			// 查询数据库以获取组名和权限内容
+			// 進DB獲取群組以及對應權限
 			adminGroupDb, err := services.NewAdminGroupService().GetGroupIndex()
 			if err != nil {
 				con.Error(c, "非最高管理superadmin")
@@ -247,9 +248,44 @@ func (con adminGroupController) onlydbindex(c *gin.Context) {
 
 			// 返回结果给客户端
 			c.JSON(http.StatusOK, gin.H{
-				"groupname":   userData.Groupname,
-				"permissions": groupPermissions,
+				"Role":           userData.GroupUid,
+				"Permissions":    userData.Permissions,
+				"groupname":      userData.Groupname,
+				"PermissionList": groupPermissions,
 			})
+		}
+	}
+}
+
+type AddPermission struct {
+	GroupName       string          `json:"group_name"`
+	PermissionsJSON map[string]bool `json:"permissions"`
+}
+
+func (con adminGroupController) dbaddIndex(c *gin.Context) {
+	var (
+		err error
+	)
+
+	// 1. 从Authorization标头中获取令牌
+	if c.Request.Method == "POST" {
+		token := c.GetHeader("token")
+		GroupName := c.PostForm("RoleName")
+		permissionsJSON := c.PostForm("PermissionList")
+
+		if token == "" {
+			// 处理缺少令牌的情况
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "缺少令牌"})
+			return
+		}
+
+		var userData redisx.UserData
+		// 2. 使用令牌从Redis检索用户数据
+		userData, err = redisx.GetUserDataFromRedis(token)
+		if err != nil {
+			// 处理从Redis检索用户数据时出现错误的情况
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "無法檢索用戶數據"})
+			return
 		}
 	}
 }

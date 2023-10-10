@@ -31,7 +31,7 @@ func (route Router) SetEngine(app *internal.Application) {
 }
 
 func (route Router) SetAdminRoute(ar *AdminRouter, middlewares ...gin.HandlerFunc) {
-	ar.root = route.r.Group("/admin")
+	ar.root = route.r.Group("/ctrl")
 	if len(middlewares) > 0 {
 		ar.root.Use(middlewares...)
 	}

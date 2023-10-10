@@ -21,6 +21,7 @@ type AdminGroupSaveReq struct {
 // speradmin DB表格建立
 type SuperAdmin struct {
 	mysqlx.BaseModle
+	Uid             uint            `gorm:"primary_key;auto_increment"`
 	GroupName       string          `gorm:"column:group_name"` // 使用標籤指定列名
 	Permissions     map[string]bool `gorm:"-"`
 	PermissionsJSON string          `gorm:"type:json"`
@@ -48,10 +49,11 @@ type SuperAdminSaveReq struct {
 // 建立種子admin權限內容
 func (au *SuperAdmin) FillData(db *gorm.DB) {
 	permissionsJSON := `{"permissions": {
-		"/admin/setting/adminuser/index:get": true
+		"/admin/setting/adminuser/index:post": true,
+		"/ctrl/system/account/rolelist:post": true
 	}}`
 
-	groupName := "superadmin" // 设置要插入的 GroupName
+	groupName := "nobody" // 设置要插入的 GroupName
 
 	// 检查数据库中是否已存在相同 GroupName 的记录
 	var existingRecord SuperAdmin

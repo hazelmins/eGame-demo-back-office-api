@@ -35,7 +35,6 @@ func NewLoginController() loginController {
 func (con loginController) Routes(rg *gin.RouterGroup) {
 	rg.GET("/captcha", con.captcha)
 	/*******登录路由**********/
-	rg.GET("/login", con.login)
 	rg.POST("/login", con.login)
 	rg.GET("/login_out", con.loginOut)
 	rg.POST("/login_out", con.loginOut)
@@ -47,8 +46,8 @@ func (con loginController) Routes(rg *gin.RouterGroup) {
 
 func (con loginController) login(c *gin.Context) {
 	if c.Request.Method == "POST" {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
+		username := c.PostForm("UserID")
+		password := c.PostForm("Password")
 
 		// 为测试方便release模式才开启验证码
 		if gin.Mode() == gin.ReleaseMode {
@@ -74,7 +73,7 @@ func (con loginController) login(c *gin.Context) {
 		// 獲取GroupName
 		groupName := adminUser.GroupName
 
-		permissions, err := services.NewAdminGroupService().GetAdminGroup(groupName)
+		permissions, uid, err := services.NewAdminGroupService().GetAdminGroup(groupName)
 		if err != nil {
 			con.Error(c, "无此管理組")
 			return
@@ -88,7 +87,7 @@ func (con loginController) login(c *gin.Context) {
 			token = strings.Replace(token, "-", "", -1)
 			// 如果密碼驗證成功，創建用戶信息字典
 			userInfo := make(map[string]interface{})
-			userInfo["uid"] = adminUser.Uid
+			userInfo["group uid"] = uid
 			userInfo["username"] = adminUser.Username
 			userInfo["groupname"] = adminUser.GroupName
 			userInfo["permissions"] = permissions
@@ -111,10 +110,10 @@ func (con loginController) login(c *gin.Context) {
 			session.Save()
 
 			// 登录成功，重定向到 /admin/home 并显示成功消息
-			con.Success2(c, "login success", permissions, adminUser.Username, adminUser.GroupName, userInfo["token"].(string), adminUser.ChangePassword)
+			con.Success2(c, permissions, int(uid), userInfo["token"].(string), adminUser.ChangePassword)
 		} else {
 			// 登录失败，显示错误消息
-			con.Error(c, "账号密码错误")
+			con.Error(c, "帳號密碼錯誤")
 		}
 	}
 }

@@ -50,24 +50,23 @@ type Permissions struct {
 }
 
 // *********************撈取群組權限per groupName********************************************************
-func (ser *adminGroupService) GetAdminGroup(groupName string) (map[string]bool, error) {
+func (ser *adminGroupService) GetAdminGroup(groupName string) (map[string]bool, uint, error) {
 	adminGroup, err := ser.Dao.GetPermissionsByGroupName(groupName)
 	if err != nil {
 		fmt.Printf("GORM 查詢錯誤：%v\n", err)
-		return nil, err
+		return nil, 0, err
 	}
 
-	// 创建一个 Permissions 结构来解析 JSON 数据
+	// 解析权限数据
 	var permissions Permissions
-
 	err = json.Unmarshal([]byte(adminGroup.PermissionsJSON), &permissions)
 	if err != nil {
 		fmt.Printf("解析 JSON 錯誤：%v\n", err)
-		return nil, err
+		return nil, 0, err
 	}
 
-	// 返回解析后的权限数据
-	return permissions.Permissions, nil
+	// 返回解析后的权限数据和 Uid
+	return permissions.Permissions, adminGroup.Uid, nil
 }
 
 // *******************************撈取全部群組以及權限***********************************

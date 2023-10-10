@@ -65,7 +65,6 @@ func (au *AdminUsers) FillData(db *gorm.DB) {
 	salt := strings.RandString(6)
 	passwordSalt := strings.Encryption("111111", salt)
 	adminUser := AdminUsers{
-		Uid:            1,
 		GroupName:      "superadmin",
 		Username:       "admin",
 		Nickname:       "管理员",

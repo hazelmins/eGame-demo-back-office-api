@@ -1,7 +1,5 @@
 /*
- * @Description:后台管理中间件
- * @Author: gphper
- * @Date: 2021-07-04 11:58:45
+ * @Description:後台中間件管理
  */
 package middleware
 
@@ -15,16 +13,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/**
+/*
+*
 用户登录验证
 */
 func AdminUserAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		type UserData struct {
-			Uid       int    `json:"uid"`
-			Username  string `json:"username"`
-			GroupName string `json:"groupname"`
+		type UserData struct { // redis中的資料結構
+			Groupname   string          `json:"groupname"`
+			Permissions map[string]bool `json:"permissions"`
+			Token       string          `json:"token"`
+			GroupUid    int             `json:"group uid"`
+			Username    string          `json:"username"`
 		}
 		var userData UserData
 
@@ -32,34 +33,35 @@ func AdminUserAuth() gin.HandlerFunc {
 		userInfoJson := session.Get("userInfo")
 		if userInfoJson == nil {
 			// 取不到就是没有登录
-			c.Header("Content-Type", "text/html; charset=utf-8")
-			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
+			c.Header("Content-Type", "application/json; charset=utf-8")
+			c.String(200, ``)
 			return
 		}
 
 		err := json.Unmarshal([]byte(userInfoJson.(string)), &userData)
 		if err != nil {
-			c.Header("Content-Type", "text/html; charset=utf-8")
-			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
+			c.Header("Content-Type", "application/json; charset=utf-8")
+			c.String(200, ``)
 			return
 		}
 
 		c.Set("username", userData.Username)
-		c.Set("uid", userData.Uid)
-		c.Set("groupname", userData.GroupName)
+		c.Set("uid", userData.GroupUid)
+		c.Set("groupname", userData.Groupname)
 		c.Next()
 	}
 }
 
-/**
+/*
+*
 用户权限验证
 */
 func AdminUserPrivs() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		username, ok := c.Get("username")
 		if !ok {
-			c.Header("Content-Type", "text/html; charset=utf-8")
-			c.String(200, `<script type="text/javascript">top.location.href="/admin/login"</script>`)
+			c.Header("Content-Type", "application/json; charset=utf-8")
+			c.String(200, ``)
 			return
 		}
 

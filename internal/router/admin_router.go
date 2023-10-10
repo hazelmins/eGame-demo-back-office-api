@@ -33,10 +33,10 @@ func (ar AdminRouter) AddRouters() {
 		ar.addRouter(admin.NewHomeController(), adminHomeRouter)
 	}
 
-	adminSettingRouter := ar.root.Group("/setting")
-	adminSettingRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs())
+	adminSettingRouter := ar.root.Group("/system")                                  //setting
+	adminSettingRouter.Use(middleware.AdminUserAuth(), middleware.AdminUserPrivs()) //中間件跑這段
 	{
-		adminGroup := adminSettingRouter.Group("/admingroup")
+		adminGroup := adminSettingRouter.Group("/account") //admingroup
 		{
 			ar.addRouter(setting.NewAdminGroupController(), adminGroup)
 		}

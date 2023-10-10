@@ -25,7 +25,7 @@ func Init() (*Router, error) {
 	router.SetRouteError(controllers.NewHandleController().Handle)
 
 	//设置全局中间件
-	router.SetGlobalMiddleware(middleware.Trace(), medium.GinLog(facade.NewLogger("admin"), time.RFC3339, false), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
+	router.SetGlobalMiddleware(middleware.Trace(), medium.GinLog(facade.NewLogger("ctrl"), time.RFC3339, false), medium.RecoveryWithLog(facade.NewLogger("admin"), true))
 
 	// 设置后台全局中间件
 	store := cookie.NewStore([]byte("1GdFRMs4fcWBvLXT"))
