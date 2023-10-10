@@ -58,11 +58,9 @@ func (con homeController) home(c *gin.Context) {
 	adminUser, _ := (services.NewAdminUserService()).GetAdminUser(map[string]interface{}{"uid": uid})
 
 	con.Html(c, http.StatusOK, "home/home.html", gin.H{
-		"menuList":  menuList,
-		"groupName": groupname,
-		"header":    adminUser.Header,
-		"logo":      adminUser.Logo,
-		"sider":     adminUser.Side,
+		"menuList":       menuList,
+		"groupName":      groupname,
+		"changepassword": adminUser.ChangePassword,
 	})
 }
 

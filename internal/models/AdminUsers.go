@@ -13,20 +13,17 @@ import (
 // Adminuser DB表格
 type AdminUsers struct {
 	mysqlx.BaseModle
-	Uid       uint   `gorm:"primary_key;auto_increment"`
-	GroupName string `gorm:"size:20;column:groupname"` // 假設groupname欄位名稱是'groupname'
-	Username  string `gorm:"size:100;comment:'用户名'"`
-	Nickname  string `gorm:"size:100;comment:'姓名'"`
-	Password  string `gorm:"size:200;comment:'密码'"`
-	Phone     string `gorm:"size:20;comment:'手机号'"`
-	LastLogin string `gorm:"size:30;comment:'最后登录ip地址'"`
-	Salt      string `gorm:"size:32;comment:'密码盐'"`
-	ApiToken  string `gorm:"size:32;comment:'用户登录凭证'"`
-	Header    string `gorm:"size:20;comment:'头部皮肤'"`
-	Logo      string `gorm:"size:20;comment:'logo皮肤'"`
-	Side      string `gorm:"size:20;comment:'侧边栏皮肤'"`
-	CreatedAt int64  `gorm:"type:bigint"`
-	UpdatedAt int64  `gorm:"type:bigint"`
+	Uid            uint   `gorm:"primary_key;auto_increment"`
+	GroupName      string `gorm:"size:20;column:groupname"` // 假設groupname欄位名稱是'groupname'
+	Username       string `gorm:"size:100;comment:'用户名'"`
+	Nickname       string `gorm:"size:100;comment:'姓名'"`
+	Password       string `gorm:"size:200;comment:'密码'"`
+	ChangePassword bool   `gorm:"comment:'是否更换密码'"`
+	LastLogin      string `gorm:"size:30;comment:'最后登录ip地址'"`
+	Salt           string `gorm:"size:32;comment:'密码盐'"`
+	ApiToken       string `gorm:"size:32;comment:'用户登录凭证'"`
+	CreatedAt      int64  `gorm:"type:bigint"`
+	UpdatedAt      int64  `gorm:"type:bigint"`
 }
 
 // admin列表
@@ -37,12 +34,12 @@ type AdminUserIndexReq struct {
 
 // 新增或更新管理員req請求內容
 type AdminUserSaveReq struct {
-	Username  string   `form:"username" label:"用户名" binding:"required"`
-	Password  string   `form:"password"`
-	Nickname  string   `form:"nickname" label:"姓名" binding:"required"`
-	Phone     string   `form:"phone"`
-	GroupName []string `form:"groupname[]" label:"用户组" binding:"required"`
-	Uid       uint     `form:"uid"`
+	Username       string   `form:"username" label:"用户名" binding:"required"`
+	Password       string   `form:"password"`
+	Nickname       string   `form:"nickname" label:"姓名" binding:"required"`
+	ChangePassword bool     `form:"changepassword"`
+	GroupName      []string `form:"groupname[]" label:"用户组" binding:"required"`
+	Uid            uint     `form:"uid"`
 }
 
 type AdminUserEditPassReq struct {
@@ -68,17 +65,15 @@ func (au *AdminUsers) FillData(db *gorm.DB) {
 	salt := strings.RandString(6)
 	passwordSalt := strings.Encryption("111111", salt)
 	adminUser := AdminUsers{
-		Uid:       1,
-		GroupName: "superadmin",
-		Username:  "admin",
-		Nickname:  "管理员",
-		Password:  passwordSalt,
-		LastLogin: "",
-		Salt:      salt,
-		ApiToken:  "",
-		Header:    "default",
-		Logo:      "default",
-		Side:      "default",
+		Uid:            1,
+		GroupName:      "superadmin",
+		Username:       "admin",
+		Nickname:       "管理员",
+		Password:       passwordSalt,
+		ChangePassword: true,
+		LastLogin:      "",
+		Salt:           salt,
+		ApiToken:       "",
 	}
 	db.Save(&adminUser)
 }

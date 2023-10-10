@@ -34,14 +34,15 @@ func (Base BaseController) Success(c *gin.Context, url string, message string) {
 	})
 }
 
-func (Base BaseController) Success2(c *gin.Context, message string, permissions map[string]bool, username string, groupname string, token string) {
+func (Base BaseController) Success2(c *gin.Context, message string, permissions map[string]bool, username string, groupname string, token string, changepassword bool) {
 	responseData := gin.H{
-		"status":      true,
-		"msg":         message,
-		"permissions": permissions,
-		"username":    username,  // 将 username 添加到 responseData 中
-		"groupname":   groupname, // 将 groupname 添加到 responseData 中
-		"token":       token,     // 将 token 添加到 responseData 中
+		"status":         true,
+		"msg":            message,
+		"permissions":    permissions,
+		"username":       username,  // 将 username 添加到 responseData 中
+		"groupname":      groupname, // 将 groupname 添加到 responseData 中
+		"token":          token,     // 将 token 添加到 responseData 中
+		"changepassword": changepassword,
 	}
 
 	c.JSON(http.StatusOK, responseData)

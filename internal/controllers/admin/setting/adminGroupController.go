@@ -39,7 +39,7 @@ func (con adminGroupController) Routes(rg *gin.RouterGroup) {
 	//***** 進DB的接口 ******
 	rg.POST("/dbindex", con.dbindex)       //單一管理員權限列表
 	rg.POST("/dbsave", con.dbsave)         //修改權限
-	rg.POST("/onlyindex", con.onlydbindex) //暴力列全部權限
+	rg.POST("/onlyindex", con.onlydbindex) //暴力列全部權限 ok
 
 }
 
@@ -207,7 +207,7 @@ func (con adminGroupController) onlydbindex(c *gin.Context) {
 		userData, err = redisx.GetUserDataFromRedis(token)
 		if err != nil {
 			// 处理从Redis检索用户数据时出现错误的情况
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "无法检索用户数据"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "無法檢索用戶數據"})
 			return
 		}
 

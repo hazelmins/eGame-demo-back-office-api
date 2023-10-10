@@ -93,6 +93,7 @@ func (con loginController) login(c *gin.Context) {
 			userInfo["groupname"] = adminUser.GroupName
 			userInfo["permissions"] = permissions
 			userInfo["token"] = token // 替换为实际的 token
+			userInfo["changepassword"] = adminUser.ChangePassword
 			// 將用戶信息序列化為 JSON 字符串
 			userstr, _ := json.Marshal(userInfo)
 
@@ -110,7 +111,7 @@ func (con loginController) login(c *gin.Context) {
 			session.Save()
 
 			// 登录成功，重定向到 /admin/home 并显示成功消息
-			con.Success2(c, "login success", permissions, adminUser.Username, adminUser.GroupName, userInfo["token"].(string))
+			con.Success2(c, "login success", permissions, adminUser.Username, adminUser.GroupName, userInfo["token"].(string), adminUser.ChangePassword)
 		} else {
 			// 登录失败，显示错误消息
 			con.Error(c, "账号密码错误")

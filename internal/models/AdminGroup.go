@@ -51,20 +51,38 @@ func (au *SuperAdmin) FillData(db *gorm.DB) {
 		"/admin/setting/adminuser/index:get": true
 	}}`
 
+	groupName := "superadmin" // 设置要插入的 GroupName
+
+	// 检查数据库中是否已存在相同 GroupName 的记录
+	var existingRecord SuperAdmin
+	err := db.Where("group_name = ?", groupName).First(&existingRecord).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		// 处理查询错误
+		log.Fatalf("Failed to query database: %s", err.Error())
+		return
+	}
+
+	// 如果已存在相同 GroupName 的记录，则不执行插入
+	if err != gorm.ErrRecordNotFound {
+		log.Println("SuperAdmin with the same GroupName already exists. Skipping insertion.")
+		return
+	}
+
 	superAdmin := SuperAdmin{
-		GroupName:       "normal admin", // 添加用户组名称
+		GroupName:       groupName,
 		PermissionsJSON: permissionsJSON,
 	}
 
 	// 使用 Create 方法插入数据
 	if err := db.Create(&superAdmin).Error; err != nil {
-		// 处理错误，例如记录日志或返回错误信息
+		// 处理其他插入错误，例如记录日志或返回错误信息
 		log.Fatalf("Failed to insert superAdmin: %s", err.Error())
 	} else {
 		// 插入成功
 		log.Println("SuperAdmin inserted successfully")
 	}
 }
+
 func (au *SuperAdmin) GetConnName() string {
 	return "default"
 }

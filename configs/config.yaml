@@ -1,15 +1,15 @@
 mysql:
    -  name: "default"
-      username: "egame"
+      username: "root"
       password: "mindy123"
       database: "egame"
-      host: "egame-mysql"
+      host: "127.0.0.1"
       port: 3306
       max_open_conn: 50
       max_idle_conn: 20
 redis:
-      addr: "egame-redis:6379"
-      db: 0
+      addr: "127.0.0.1:6379"
+      db: 6
       password: ""
 session:
       session_name: "gosession_id"

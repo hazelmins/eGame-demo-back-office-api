@@ -1,3 +1,7 @@
+/*
+已經合併到 run root 了
+*/
+
 package db
 
 import (
@@ -28,7 +32,7 @@ func init() {
 	cmdMigrate.Flags().StringVarP(&tables, "table", "t", "", "input a table name")
 }
 
-//碼定義了一個名為 "table" 的參數選項，簡稱 "t"，並將其與變數 tables 綁定。這個選項用於指定要遷移的數據表的名稱
+//定義了一個名為 "table" 的參數選項，簡稱 "t"，並將其與變數 tables 綁定。這個選項用於指定要遷移的數據表的名稱
 
 func migrateFunc(cmd *cobra.Command, args []string) {
 	var tableMap map[string]struct{}

@@ -69,10 +69,10 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 
 		// 設置要更新的字段
 		fields := map[string]interface{}{
-			"group_name": string(groupnameStr),
-			"username":   req.Username,
-			"nickname":   req.Nickname,
-			"phone":      req.Phone,
+			"group_name":     string(groupnameStr),
+			"username":       req.Username,
+			"nickname":       req.Nickname,
+			"changepassword": req.ChangePassword,
 		}
 
 		// 如果 req.Password 不為空，則更新密碼
@@ -101,12 +101,12 @@ func (ser *adminUserService) SaveAdminUser(req models.AdminUserSaveReq) (err err
 		salt := gstrings.RandString(6)
 		passwordSalt := gstrings.Encryption(req.Password, salt)
 		adminUser := models.AdminUsers{
-			GroupName: string(groupnameStr),
-			Nickname:  req.Nickname,
-			Username:  req.Username,
-			Password:  passwordSalt,
-			Phone:     req.Phone,
-			Salt:      salt,
+			GroupName:      string(groupnameStr),
+			Nickname:       req.Nickname,
+			Username:       req.Username,
+			Password:       passwordSalt,
+			ChangePassword: req.ChangePassword,
+			Salt:           salt,
 		}
 		err = tx.Save(&adminUser).Error
 		if err != nil {

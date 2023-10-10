@@ -28,21 +28,21 @@ curl -X POST 0.0.0.0:8091/admin/login
    mysql:
    -  name: "default"
       username: "root"
-      password: "123456"
-      database: "db_ginadmin"
+      password: "mindy123"
+      database: "egame"
       host: "127.0.0.1"
       port: 3306
       max_open_conn: 50
       max_idle_conn: 20
    redis:
       addr: "localhost:6379"
-      db: 0
+      db: 5
       password: ""
    session:
       session_name: "gosession_id"
    base:
       host: 0.0.0.0
-      port: 20011
+      port: 8091
       log_media: "redis"
    ```
 
@@ -54,24 +54,24 @@ curl -X POST 0.0.0.0:8091/admin/login
 1. 替换conf目录下的配置项
    
    ```yaml
-   mysql:
+  mysql:
    -  name: "default"
-      username: "docker"
-      password: "123456"
-      database: "docker_mysql"
-      host: "localmysql"
+      username: "egame"
+      password: "mindy123"
+      database: "egame"
+      host: "egame-mysql"
       port: 3306
       max_open_conn: 50
       max_idle_conn: 20
-   redis:
-    -  addr: "localredis:6379"
-      db: 0
-      password: "ginadmin"
-   session:
-    -  session_name: "gosession_id"
-   base:
-    -  host: 0.0.0.0
-      port: 20010
+redis:
+      addr: "egame-redis:6379"
+      db: 6
+      password: ""
+session:
+      session_name: "gosession_id"
+base:
+      host: 0.0.0.0
+      port: 8091
       log_media: "redis"
    ```
 

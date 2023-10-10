@@ -1,12 +1,10 @@
 /*
- * @Description:
- * @Author: gphper
- * @Date: 2021-07-08 20:12:04
+ * @Description:table 表格在這邊加入鄉親
  */
 package models
 
 func GetModels() []interface{} {
 	return []interface{}{
-		&AdminUsers{}, &UploadType{}, &User{}, &SuperAdmin{},
+		&AdminUsers{}, &User{}, &SuperAdmin{},
 	}
 }
